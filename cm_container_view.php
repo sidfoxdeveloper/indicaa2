@@ -13,6 +13,14 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
         
         $pagetype = "Edit";
         $data = fetchqry("*", $table, array("id=" => $_REQUEST['id']));
+        $containerImage = fetchqry("*", TB_CONTAINER_IMAGES, array("container_id=" => $_REQUEST['id']));
+        
+        $image_stock_pile = empty($containerImage['image_stock_pile']) ? "not-available.png" : $containerImage['image_stock_pile'];
+        $image_empty_container = empty($containerImage['image_empty_container']) ? "not-available.png" : $containerImage['image_empty_container'];
+        $image_container_loading = empty($containerImage['image_container_loading']) ? "not-available.png" : $containerImage['image_container_loading'];
+        $image_container_seal = empty($containerImage['image_container_seal']) ? "not-available.png" : $containerImage['image_container_seal'];
+        $image_documents = empty($containerImage['image_documents']) ? "not-available.png" : $containerImage['image_documents'];
+        
         $country_id = $data['country_id'];
         $company_id = $data['company_id'];
         $yard_id = $data['yard_id'];
@@ -20,6 +28,8 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
         $container_placed_yard = $data['container_placed_yard'];
         $container_number = $data['container_number'];
         $container_size_id = $data['container_size_id'];
+        $branch_code_id = $data['branch_code_id'];
+        $shipping_agent_id = $data['shipping_agent_id'];
         $tare_weight = $data['tare_weight'];
         $gross_weight = $data['gross_weight'];
         $net_weight = $data['net_weight'];
@@ -34,7 +44,6 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
         $supplier = $data['supplier'];
         $seal_number = $data['seal_number'];
         $exchange_rate= $data['exchange_rate'];
-        $branch_code = $data['branch_code'];
         $shipping_agent = $data['shipping_agent'];
         $transporter = $data['transporter'];
         $shipped_to_storage = $data['shipped_to_storage'];
@@ -49,6 +58,7 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
         $ls_number = $data['ls_number'];
         $vo_number = $data['vo_number'];
         $status_super_admin = $data['status_super_admin'];
+        $status = $data['status'];
         $vessel_name = $data['vessel_name'];
         $voyage = $data['voyage'];
         $sob_date = $data['sob_date'];
@@ -61,56 +71,7 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
         $fca = $data['fca'];
         $created_at = date( 'd F, Y', strtotime($data['created_at']) );        
         
-    } else {
-        
-        $country_id = $_REQUEST['country_id'];
-        $company_id = $_REQUEST['company_id'];
-        $yard_id = $_REQUEST['yard_id'];
-        $empty_container_received = $_REQUEST['empty_container_received'];
-        $container_placed_yard = $_REQUEST['container_placed_yard'];
-        $container_number = $_REQUEST['container_number'];
-        $container_size_id = $_REQUEST['container_size_id'];
-        $tare_weight = $_REQUEST['tare_weight'];
-        $gross_weight = $_REQUEST['gross_weight'];
-        $net_weight = $_REQUEST['net_weight'];
-        $net_weight_supplier = $_REQUEST['net_weight_supplier'];
-        $net_weight_yard = $_REQUEST['net_weight_yard'];
-        $pay_load = $_REQUEST['pay_load'];
-        $empty_depot_name_id = $_REQUEST['empty_depot_name_id'];
-        $material_code = $_REQUEST['material_code'];
-        $material_description = $_REQUEST['material_description'];
-        $material_quality_code = $_REQUEST['material_quality_code'];
-        $shipping_line_id = $_REQUEST['shipping_line_id'];
-        $supplier = $_REQUEST['supplier'];
-        $seal_number = $_REQUEST['seal_number'];
-        $exchange_rate= $_REQUEST['exchange_rate'];
-        $branch_code = $_REQUEST['branch_code'];
-        $shipping_agent = $_REQUEST['shipping_agent'];
-        $transporter = $_REQUEST['transporter'];
-        $shipped_to_storage = $_REQUEST['shipped_to_storage'];
-        $storage = $_REQUEST['storage'];
-        $shifted_to_terminal = $_REQUEST['shifted_to_terminal'];
-        $terminal = $_REQUEST['terminal'];
-        $shifted_to_port = $_REQUEST['shifted_to_port'];
-        $port_of_loading = $_REQUEST['port_of_loading'];
-        $grn_number = $_REQUEST['grn_number'];
-        $grn_date = $_REQUEST['grn_date'];
-        $base_port_used_for_freight_costing = $_REQUEST['base_port_used_for_freight_costing'];
-        $ls_number = $_REQUEST['ls_number'];
-        $vo_number = $_REQUEST['vo_number'];
-        $status_super_admin = $_REQUEST['status_super_admin'];
-        $vessel_name = $_REQUEST['vessel_name'];
-        $voyage = $_REQUEST['voyage'];
-        $sob_date = $_REQUEST['sob_date'];
-        $bli_number = $_REQUEST['bli_number'];
-        $original_bl_number = $_REQUEST['original_bl_number'];
-        $ho_order_number = $_REQUEST['ho_order_number'];
-        $ex_yard_price = $_REQUEST['ex_yard_price'];
-        $cnf = $_REQUEST['cnf'];
-        $fob = $_REQUEST['fob'];
-        $fca = $_REQUEST['fca'];
-        
-    }
+    } 
     
     if (strpos($_SERVER['REQUEST_URI'], "?true") != 0) {
         
@@ -163,6 +124,25 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                     <div class="card-block">
                                                         <h5 class="card-title"><?php echo $pagename; ?></h5>
                                                         <div>
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="status" class="col-sm-2 form-control-label">Status</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <?php
+                                                                            if($status == 'draft'):
+                                                                                echo '<button class="btn btn-default" >Draft</button';
+                                                                            elseif($status == 'pending_upload'):    
+                                                                                echo '<button class="btn btn-primary" >Pending Upload</button>';
+                                                                            elseif($status == 'not_verified_by_country_manager'):    
+                                                                                echo '<button class="btn btn-danger" >Not verified</button>';
+                                                                            elseif($status == 'verified_by_country_manager'):        
+                                                                                echo '<button class="btn btn-success" >Verified</button>';
+                                                                            endif;
+                                                                        ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div> 
                                                             
                                                             <div class="form-group row">
                                                                 <label for="country_id" class="col-sm-2 form-control-label">Country</label>
@@ -369,7 +349,186 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                                 </div>
                                                             </div>
                                                             
-                                                         
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="branch_code" class="col-sm-2 form-control-label">Branch Code</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <?php
+                                                                            $branch_codes = explode(',', $branch_code_id);
+                                                                            
+                                                                            foreach ($branch_codes as $row):
+                                                                                $i = 0;
+                                                                                $row1 = fetchqry('*', TB_BARCODES, array('id='=>$row) );
+                                                                                echo $row1['name'].'<br>';
+                                                                                $i = $i+1;
+                                                                            endforeach;                                                                            
+                                                                        ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="shipping_agent" class="col-sm-2 form-control-label">Shipping Agent</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <?php
+                                                                        $shipping_agent = fetchqry('*', TB_SHIPPING_AGENT, array('id='=>$shipping_agent_id)  );
+                                                                        echo $shipping_agent['name'];
+                                                                        ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="transporter" class="col-sm-2 form-control-label">Transpoter</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <?php
+                                                                        echo $transporter;
+                                                                        ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="shipped_to_storage" class="col-sm-2 form-control-label">Shipping to Storage</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <?php echo date('d M, Y', strtotime($shipped_to_storage));?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="shifted_to_terminal" class="col-sm-2 form-control-label">Shifted To Terminal</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <?php echo date('d M, Y', strtotime($shipped_to_storage));?>                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="terminal" class="col-sm-2 form-control-label">Terminal</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <?php echo $terminal;?>                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="shifted_to_port" class="col-sm-2 form-control-label">Shifted To Port</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <?php echo date('d M, Y', strtotime($shifted_to_port));?>                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="port_of_loading" class="col-sm-2 form-control-label">Port Of Loading</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <?php echo $port_of_loading; ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="grn_number" class="col-sm-2 form-control-label">Grn Number</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <?php echo $grn_number; ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="grn_date" class="col-sm-2 form-control-label">Grn Date</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <?php echo date('d M, Y', strtotime($grn_date));?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="base_port_used_for_freight_costing" class="col-sm-2 form-control-label">Based Port Used For Freight Costing</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <?php echo $base_port_used_for_freight_costing; ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="ls_number" class="col-sm-2 form-control-label">Ls Number</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <?php echo $ls_number; ?>                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="vo_number" class="col-sm-2 form-control-label">Vo Number</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <?php echo $vo_number; ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group row">                                                            
+                                                                <label class="col-sm-2 form-control-label">Stock Pile</label>
+                                                                <div class="col-sm-10">                                                            	
+                                                                    <div class="input-group">
+                                                                        <a href="<?php echo URL_BASE . DIR_UPLOADS . $image_stock_pile; ?>"  target="_blank" rel="viewimage"><img src="<?php echo URL_BASE . DIR_UPLOADS . $image_stock_pile; ?>" width="100"></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group row">                                                            
+                                                                <label class="col-sm-2 form-control-label">Empty Container</label>
+                                                                <div class="col-sm-10">                                                            	
+                                                                    <div class="input-group">
+                                                                        <a href="<?php echo URL_BASE . DIR_UPLOADS . $image_empty_container; ?>"  target="_blank" rel="viewimage"><img src="<?php echo URL_BASE . DIR_UPLOADS . $image_empty_container; ?>" width="100"></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">                                                            
+                                                                <label class="col-sm-2 form-control-label">Container Loading</label>
+                                                                <div class="col-sm-10">                                                            	
+                                                                    <div class="input-group">
+                                                                        <a href="<?php echo URL_BASE . DIR_UPLOADS . $image_container_loading; ?>"  target="_blank" rel="viewimage"><img src="<?php echo URL_BASE . DIR_UPLOADS . $image_container_loading; ?>" width="100"></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">                                                            
+                                                                <label class="col-sm-2 form-control-label">Container Seal</label>
+                                                                <div class="col-sm-10">                                                            	
+                                                                    <div class="input-group">
+                                                                        <a href="<?php echo URL_BASE . DIR_UPLOADS . $image_container_seal; ?>"  target="_blank" rel="viewimage"><img src="<?php echo URL_BASE . DIR_UPLOADS . $image_container_seal; ?>" width="100"></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">                                                            
+                                                                <label class="col-sm-2 form-control-label">Documents</label>
+                                                                <div class="col-sm-10">                                                            	
+                                                                    <div class="input-group">
+                                                                        <a href="<?php echo URL_BASE . DIR_UPLOADS . $image_documents; ?>"  target="_blank" rel="viewimage"><img src="<?php echo URL_BASE . DIR_UPLOADS . $image_documents;?>" width="100"></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                                                                                        
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-6"></div>
+                                                                <div class="col-sm-6 text-right">
+                                                                    <a class="btn btn-danger right" href="<?php echo URL_BASEADMIN . $listpagename . $gobackurl; ?>">Back</a>
+                                                                </div> 
+                                                            </div>
                                                             
                                                         </div>
                                                     </div>
@@ -389,30 +548,6 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
             </div>
             <?php include('includes/script_bottom.php'); ?>
             
-            <script>
-                
-                function chkrequired() {
-                    
-                    var chk = new Array();
-                    chk['s:country_id'] = "Country.";
-                    chk['s:company_id'] = "Company.";
-                    chk['s:yard_id'] = "Yard.";
-                    chk['t:container_number'] = "Container Number.";
-                    
-                    if (check(chk, 1))
-                        document.mainform.submit();                    
-                    
-                }                
-                CKEDITOR.replace( 'material_description', {toolbar: 'Basic', height: 180} );
-                $('#imagetrigger').click(function (e) {
-                    $('#image').trigger('click');
-                });
-                $('#image').on('change', function () {
-                    $('#imagefilename').html($(this).val());
-                });
-                
-            </script>
-            
         </body>
     </html>
     <?php
@@ -423,57 +558,6 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
     
 if (isset($_POST['addnew'])) {
     
-    $image = uploadfile("image", $image, array("jpeg", "jpg", "gif", "png"));
-    
-    if ($_REQUEST['id']) {
-        
-        $arr = array(
-            "users_groups_id"=>$_POST['users_groups_id'], 
-            "first_name"=>$_POST['first_name'],
-            "last_name"=>$_POST['last_name'],
-            "phone"=>$_POST['phone'], 
-            "location"=>replacequoteb($_POST['location']),
-            "image"=>$image, 
-            "status"=>$_POST['status'],
-            "app_access_days"=>$_POST['app_access_days']              
-        );    
-        
-        $update = updateqry($arr, array("id=" => $_REQUEST['id']), $table);        
-        
-    } else {
-        
-        $dQry = " SELECT id,email FROM ".$table." WHERE `email`='".$_REQUEST['email']."' OR `user_name`='".$_REQUEST['user_name']."' ";
-        $dRes = mysqli_query($con, $dQry);
-        
-        if( mysqli_num_rows($dRes) ):
-            
-                $_SESSION['msg'] = 'User already registered, Plese try with another email and username |alert-error';    
-                die;
-        else:
-            
-            $arr = array(
-                "users_groups_id"=>$_POST['users_groups_id'], 
-                "user_name"=>$_POST['user_name'], 
-                "first_name"=>$_POST['first_name'],
-                "last_name"=>$_POST['last_name'],
-                "email"=>$_POST['email'], 
-                "password"=>encode($_POST['password']),
-                "phone"=>$_POST['phone'], 
-                "location"=>replacequoteb($_POST['location']),
-                "image"=>$image, 
-                "status"=>$_POST['status'],
-                "app_access_days"=>$_POST['app_access_days'],
-                "created_at"=>date('Y-m-d h:i:s')
-            );  
-        
-            $insert = insertqry($arr, $table);
-            $insertedid = getfieldmaxvalue('id', $table); 
-                
-        endif;
-    }
-    
-    $updateid = ($_REQUEST['id']) ? $_REQUEST['id'] : $insertedid;
-
     if ($update || $insert)
         $_SESSION['msg'] = 'Action performed successfully.|alert-success';
     else

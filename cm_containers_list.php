@@ -98,17 +98,22 @@ if ($permission['view']) {
                                                                         </td>
                                                                         <td>
                                                                             <?php
-                                                                            if($row['status'] == 'verified_by_country_manger' ):
-                                                                                echo 'Verified';
-                                                                            else:
-                                                                                echo 'UnVerified';
-                                                                            endif;
+                                                                                $status = $row['status'];
+                                                                                if($status == 'draft'):
+                                                                                    echo '<button class="btn btn-default btn-lg col-sm-6" >Draft</button';
+                                                                                elseif($status == 'pending_upload'):    
+                                                                                    echo '<button class="btn btn-primary btn-lg col-sm-6" >Pending Upload</button>';
+                                                                                elseif($status == 'not_verified_by_country_manager'):    
+                                                                                    echo '<button class="btn btn-danger btn-lg col-sm-6" >Not verified</button>';
+                                                                                elseif($status == 'verified_by_country_manager'):        
+                                                                                    echo '<button class="btn btn-success btn-lg col-sm-6" >Verified</button>';
+                                                                                endif;
                                                                             ?>
                                                                         </td>
                                                                         <td class="text-center">
                                                                             <a href="<?php echo URL_BASEADMIN . $viewpagename . $paginationback . '&id=' . $row['id'] . '&page=' . $page; ?>" class="btn btn-default btn-sm" title="View" >View</a>   
-                                                                            <?php /* if($permission['edit']) { ?><a href="<?php echo URL_BASEADMIN . $editpagename . $paginationback . '&id=' . $row['id'] . '&page=' . $page; ?>" class="btn btn-primary btn-sm" title="Update" >Update</a><?php } ?>   
-                                                                            <?php if($permission['del']) { ?><a class="btn btn-danger btn-sm" href="javascript:" onclick="return deletesure('<?php echo $row['id'];?>', '<?php echo $table; ?>', '');">Delete</a><?php } */ ?>
+                                                                            <?php if($permission['edit']) { ?><a href="<?php echo URL_BASEADMIN . $editpagename . $paginationback . '&id=' . $row['id'] . '&page=' . $page; ?>" class="btn btn-primary btn-sm" title="Update" >Update</a><?php } ?>   
+                                                                            <?php /* if($permission['del']) { ?><a class="btn btn-danger btn-sm" href="javascript:" onclick="return deletesure('<?php echo $row['id'];?>', '<?php echo $table; ?>', '');">Delete</a><?php } */ ?>
                                                                         </td>
                                                                     </tr>
                                                                     <?php

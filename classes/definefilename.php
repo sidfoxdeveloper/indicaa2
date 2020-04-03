@@ -36,6 +36,9 @@ define('CONTAINER_ARCHIVE_EDIT', 'container_archive_edit.php');
 define('SA_MATERIAL_CODE_LIST', 'sa_material_code_list.php');
 define('SA_MATERIAL_CODE_EDIT', 'sa_material_code_edit.php');
 
+define('SA_BRANCH_LIST', 'sa_branch_list.php');
+define('SA_BRANCH_EDIT', 'sa_branch_edit.php');
+
 /**  Country Manager  **/
 define('CM_HOME', 'cm_home.php');
 define('CM_CONTAINERS_LIST', 'cm_containers_list.php');
@@ -46,35 +49,14 @@ define('CM_CONTAINER_VIEW', 'cm_container_view.php');
 define('EMO_HOME', 'emo_home.php');
 define('EMO_EMPTY_DEPOT_LIST', 'emo_empty_depot_list.php');
 define('EMO_EMPTY_DEPOT_EDIT', 'emo_empty_depot_edit.php');
-
 define('EMO_SUPPLIER_LIST', 'emo_supplier_list.php');
 define('EMO_SUPPLIER_EDIT', 'emo_supplier_edit.php');
+
+define('EMO_SHIPPING_AGENT_EDIT', 'emo_shipping_agent_edit.php');
+define('EMO_SHIPPING_AGENT_LIST', 'emo_shipping_agent_list.php');
 
 
 /* * Included Files * */
 define('INC_PAGINATION', 'pagination.php');
 define('INC_NORECORD', 'no_record_found.php');
 define('INC_DONTACCESSMSG', 'donot_access_msg.php');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

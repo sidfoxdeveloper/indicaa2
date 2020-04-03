@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 29, 2020 at 09:23 PM
+-- Generation Time: Apr 03, 2020 at 12:04 PM
 -- Server version: 5.5.53-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.20
 
@@ -19,6 +19,36 @@ SET time_zone = "+00:00";
 --
 -- Database: `indicaa`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `branch_code`
+--
+
+CREATE TABLE IF NOT EXISTS `branch_code` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Barcodes' AUTO_INCREMENT=11 ;
+
+--
+-- Dumping data for table `branch_code`
+--
+
+INSERT INTO `branch_code` (`id`, `name`, `created_at`, `modified_at`) VALUES
+(1, 'BT-2255-333', '2020-03-30 06:48:06', '2020-03-30 13:18:06'),
+(2, 'BT-2255-111', '2020-03-30 06:48:06', '2020-03-30 13:18:06'),
+(3, 'BT-2255-222', '2020-03-30 06:48:06', '2020-03-30 13:18:06'),
+(4, 'BT-2255-444', '2020-03-30 06:48:06', '2020-03-30 13:18:06'),
+(5, 'BT-2255-555', '2020-03-30 06:48:06', '2020-03-30 13:18:06'),
+(6, 'BT-2255-666', '2020-03-30 06:48:06', '2020-03-30 13:18:06'),
+(7, 'BT-2255-777', '2020-03-30 06:48:06', '2020-03-30 13:18:06'),
+(8, 'BT-2255-888', '2020-03-30 06:48:06', '2020-03-30 13:18:06'),
+(9, 'BT-2255-999', '2020-03-30 06:48:06', '2020-03-30 13:18:06'),
+(10, 'BT-2255-1010', '2020-03-30 06:48:06', '2020-03-30 13:18:06');
 
 -- --------------------------------------------------------
 
@@ -58,6 +88,8 @@ CREATE TABLE IF NOT EXISTS `containers` (
   `empty_depot_name_id` int(11) NOT NULL COMMENT 'Admin will enter for each country',
   `shipping_line_id` int(11) NOT NULL,
   `supplier_id` int(11) NOT NULL,
+  `branch_code_id` varchar(255) NOT NULL,
+  `shipping_agent_id` int(11) NOT NULL,
   `empty_container_received` datetime NOT NULL,
   `container_placed_yard` datetime NOT NULL COMMENT 'SHOULD NOT BE LESS THAN the Empty container received date.',
   `container_number` varchar(255) NOT NULL COMMENT 'Format - 4 ALPHABETS "-" 6 DIGITS "-" 1 DIGIT',
@@ -68,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `containers` (
   `net_weight_yard` varchar(255) NOT NULL,
   `port_of_destination` varchar(255) NOT NULL,
   `pay_load` varchar(255) NOT NULL COMMENT 'textbox - num with 3,   decimal place,   min 21 T and MAX 29,  Show notification to admin and Country manager if is below or above this value',
-  `material_code` varchar(255) NOT NULL COMMENT 'Super admin will enter',
+  `material_code_id` varchar(255) NOT NULL COMMENT 'Super admin will enter',
   `material_description` text NOT NULL COMMENT '1000 CHARACTERS',
   `material_quality_code` varchar(255) NOT NULL COMMENT 'Not mandatory',
   `shipping_line` varchar(255) NOT NULL COMMENT 'Super admin will enter',
@@ -76,22 +108,20 @@ CREATE TABLE IF NOT EXISTS `containers` (
   `seal_number` text NOT NULL COMMENT 'multiple comma seprated(,)',
   `remarks` text NOT NULL,
   `exchange_rate` enum('master','optional') NOT NULL COMMENT 'Radio button - 1. Master exchange rate   2. OP exchange rate',
-  `branch_code` varchar(255) NOT NULL COMMENT 'drop-down Super admin will enter',
-  `shipping_agent` int(11) NOT NULL COMMENT 'EMO will enter',
-  `transporter` enum('1','2') NOT NULL,
+  `transporter` enum('Yes','No') NOT NULL DEFAULT 'Yes' COMMENT 'NAME OF TRANSPORTER(Is it country sepecific - YES)  -  manage by EMO',
   `shipped_to_storage` datetime NOT NULL COMMENT 'should not be less than the date placed in the yard',
-  `storage` int(11) NOT NULL COMMENT 'EMO will enter',
+  `storage` varchar(255) NOT NULL COMMENT 'EMO will enter',
   `shifted_to_terminal` datetime NOT NULL COMMENT 'should not be less than the date placed in the yard',
   `terminal` varchar(255) NOT NULL COMMENT 'EMO will enter',
   `shifted_to_port` datetime NOT NULL COMMENT 'should not be less than the date placed in the terminal',
-  `port_of_loading` int(11) NOT NULL COMMENT 'EMO will enter',
+  `port_of_loading` varchar(255) NOT NULL COMMENT 'EMO will enter',
   `grn_number` varchar(255) NOT NULL,
   `grn_date` datetime NOT NULL COMMENT 'should not be less than the date shifter to port',
   `base_port_used_for_freight_costing` int(11) NOT NULL COMMENT 'super admin will enter',
   `ls_number` varchar(255) NOT NULL,
   `vo_number` varchar(255) NOT NULL,
   `status_super_admin` enum('1','2') NOT NULL COMMENT 'super admin will enter the values',
-  `status` enum('draft','pending_upload','not_verified_by_country_manager','verified_by_country_manger') NOT NULL DEFAULT 'draft',
+  `status` enum('draft','pending_upload','not_verified_by_country_manager','verified_by_country_manager') NOT NULL DEFAULT 'draft',
   `vessel_name` varchar(255) NOT NULL,
   `voyage` varchar(255) NOT NULL,
   `sob_date` datetime NOT NULL,
@@ -105,23 +135,15 @@ CREATE TABLE IF NOT EXISTS `containers` (
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `containers`
 --
 
-INSERT INTO `containers` (`id`, `user_id`, `country_id`, `company_id`, `yard_id`, `container_size_id`, `empty_depot_name_id`, `shipping_line_id`, `supplier_id`, `empty_container_received`, `container_placed_yard`, `container_number`, `tare_weight`, `gross_weight`, `net_weight`, `net_weight_supplier`, `net_weight_yard`, `port_of_destination`, `pay_load`, `material_code`, `material_description`, `material_quality_code`, `shipping_line`, `supplier`, `seal_number`, `remarks`, `exchange_rate`, `branch_code`, `shipping_agent`, `transporter`, `shipped_to_storage`, `storage`, `shifted_to_terminal`, `terminal`, `shifted_to_port`, `port_of_loading`, `grn_number`, `grn_date`, `base_port_used_for_freight_costing`, `ls_number`, `vo_number`, `status_super_admin`, `status`, `vessel_name`, `voyage`, `sob_date`, `bli_number`, `original_bl_number`, `ho_order_number`, `ex_yard_price`, `cnf`, `fob`, `fca`, `created_at`, `modified_at`) VALUES
-(4, 6, 1, 3, 1, 1, 1, 1, 1, '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'ABCD-123456-1', '11', '600GM', '5566', '6565656', '5090', 'rajkot', '55T', 'MTCode', 'materail description', '9898989', '', '', '1', 'this remarks of app', 'master', '', 0, '1', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 0, '', '0000-00-00 00:00:00', 0, '', '', '1', 'not_verified_by_country_manager', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '2020-03-25 19:28:46', '2020-03-29 12:52:56'),
-(5, 6, 1, 3, 1, 1, 1, 1, 1, '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'ABCD-123456-2', '11', '600GM', '5566', '6565656', '5090', 'rajkot', '55T', 'MTCode', 'materail description', '9898989', '', '', '1', 'this remarks of app', 'master', '', 0, '1', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 0, '', '0000-00-00 00:00:00', 0, '', '', '1', 'not_verified_by_country_manager', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '2020-03-25 19:28:46', '2020-03-29 12:53:28'),
-(6, 6, 1, 3, 1, 1, 1, 1, 1, '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'ABCD-123456-3', '11', '600GM', '5566', '6565656', '5090', 'rajkot', '55T', 'MTCode', 'materail description', '9898989', '', '', '1', 'this remarks of app', 'master', '', 0, '1', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 0, '', '0000-00-00 00:00:00', 0, '', '', '1', 'not_verified_by_country_manager', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '2020-03-25 19:28:46', '2020-03-29 12:53:28'),
-(7, 6, 1, 3, 1, 1, 1, 1, 1, '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'ABCD-123456-4', '11', '600GM', '5566', '6565656', '5090', 'rajkot', '55T', 'MTCode', 'materail description', '9898989', '', '', '1', 'this remarks of app', 'master', '', 0, '1', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 0, '', '0000-00-00 00:00:00', 0, '', '', '1', 'not_verified_by_country_manager', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '2020-03-25 19:28:46', '2020-03-29 12:53:28'),
-(8, 6, 1, 3, 1, 1, 1, 1, 1, '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'ABCD-123456-5', '11', '600GM', '5566', '6565656', '5090', 'rajkot', '55T', 'MTCode', 'materail description', '9898989', '', '', '1', 'this remarks of app', 'master', '', 0, '1', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 0, '', '0000-00-00 00:00:00', 0, '', '', '1', 'not_verified_by_country_manager', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '2020-03-25 19:28:46', '2020-03-29 12:53:28'),
-(9, 6, 1, 3, 1, 1, 1, 1, 1, '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'ABCD-123456-6', '11', '600GM', '5566', '6565656', '5090', 'rajkot', '55T', 'MTCode', 'materail description', '9898989', '', '', '1', 'this remarks of app', 'master', '', 0, '1', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 0, '', '0000-00-00 00:00:00', 0, '', '', '1', 'not_verified_by_country_manager', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '2020-03-25 19:28:46', '2020-03-29 12:53:28'),
-(10, 6, 1, 3, 1, 1, 1, 1, 1, '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'ABCD-123456-7', '11', '600GM', '5566', '6565656', '5090', 'rajkot', '55T', 'MTCode', 'materail description', '9898989', '', '', '1', 'this remarks of app', 'master', '', 0, '1', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 0, '', '0000-00-00 00:00:00', 0, '', '', '1', 'not_verified_by_country_manager', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '2020-03-25 19:28:46', '2020-03-29 12:53:28'),
-(11, 6, 1, 3, 1, 1, 1, 1, 1, '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'ABCD-123456-8', '11', '600GM', '5566', '6565656', '5090', 'rajkot', '55T', 'MTCode', 'materail description', '9898989', '', '', '1', 'this remarks of app', 'master', '', 0, '1', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 0, '', '0000-00-00 00:00:00', 0, '', '', '1', 'not_verified_by_country_manager', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '2020-03-25 19:28:46', '2020-03-29 12:53:28'),
-(12, 6, 1, 3, 1, 1, 1, 1, 1, '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'ABCD-123456-9', '11', '600GM', '5566', '6565656', '5090', 'rajkot', '55T', 'MTCode', 'materail description', '9898989', '', '', '1', 'this remarks of app', 'master', '', 0, '1', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 0, '', '0000-00-00 00:00:00', 0, '', '', '1', 'not_verified_by_country_manager', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '2020-03-25 19:28:46', '2020-03-29 12:53:28'),
-(13, 6, 1, 3, 1, 1, 1, 1, 1, '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'ABCD-123456-10', '11', '600GM', '5566', '6565656', '5090', 'rajkot', '55T', 'MTCode', 'materail description', '9898989', '', '', '1', 'this remarks of app', 'master', '', 0, '1', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 0, '', '0000-00-00 00:00:00', 0, '', '', '1', 'verified_by_country_manger', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '2020-03-25 19:28:46', '2020-03-29 12:53:28');
+INSERT INTO `containers` (`id`, `user_id`, `country_id`, `company_id`, `yard_id`, `container_size_id`, `empty_depot_name_id`, `shipping_line_id`, `supplier_id`, `branch_code_id`, `shipping_agent_id`, `empty_container_received`, `container_placed_yard`, `container_number`, `tare_weight`, `gross_weight`, `net_weight`, `net_weight_supplier`, `net_weight_yard`, `port_of_destination`, `pay_load`, `material_code_id`, `material_description`, `material_quality_code`, `shipping_line`, `supplier`, `seal_number`, `remarks`, `exchange_rate`, `transporter`, `shipped_to_storage`, `storage`, `shifted_to_terminal`, `terminal`, `shifted_to_port`, `port_of_loading`, `grn_number`, `grn_date`, `base_port_used_for_freight_costing`, `ls_number`, `vo_number`, `status_super_admin`, `status`, `vessel_name`, `voyage`, `sob_date`, `bli_number`, `original_bl_number`, `ho_order_number`, `ex_yard_price`, `cnf`, `fob`, `fca`, `created_at`, `modified_at`) VALUES
+(4, 6, 2, 4, 2, 1, 1, 1, 2, '2', 1, '2020-10-20 00:00:00', '2020-10-20 00:00:00', 'AAA-555-EEE-SSS', '55T', '600GM', '10010', '1010', '5090', 'rajkot', '66T', '2', 'materail description test test test test test stest', '101010', '', '', '1', 'this remarks of app', 'master', 'Yes', '2020-03-20 00:00:00', 'storage - 1', '2020-03-21 00:00:00', 'Terminal tesiting', '2020-03-21 00:00:00', 'Port of loading testing', 'ggggrrrnnnoooo', '2020-03-23 00:00:00', 5555, 'llllssnnoo', 'vvooonnoo', '1', 'verified_by_country_manager', '', '', '2020-03-24 00:00:00', '2020-03-25 00:00:00', '', '', '', '', '', '', '2020-03-25 19:28:46', '2020-04-02 12:58:59'),
+(14, 6, 1, 3, 1, 1, 1, 1, 1, '3', 1, '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'ABCD-123456-1', '11T', '600GM', '5566', '6565656', '5090', 'rajkot', '55T', 'MTCode', 'materail description', '9898989', '', '', '1', 'this remarks of app', 'master', 'Yes', '2020-03-20 00:00:00', 'storage - 2', '2020-03-21 00:00:00', 'Terminal tesiting', '2020-03-21 00:00:00', 'Port of loading testing', 'ggggrrrnnnoooo', '2020-03-23 00:00:00', 5555, 'llllssnnoo', 'vvooonnoo', '1', 'verified_by_country_manager', '', '', '2020-03-24 00:00:00', '2020-03-25 00:00:00', '', '', '', '', '', '', '2020-03-25 19:28:46', '2020-04-02 12:59:06');
 
 -- --------------------------------------------------------
 
@@ -151,7 +173,15 @@ CREATE TABLE IF NOT EXISTS `container_images` (
   `image_container_seal` varchar(255) NOT NULL,
   `image_documents` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='images of container' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='images of container' AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `container_images`
+--
+
+INSERT INTO `container_images` (`id`, `container_id`, `image_stock_pile`, `image_empty_container`, `image_container_loading`, `image_container_seal`, `image_documents`) VALUES
+(1, 4, '2020/03/stockpile.png', '2020/03/empty-container.png', '2020/03/loading-container.png', '2020/03/seal.jpg', '2020/03/documents.jpg'),
+(2, 14, '2020/03/stockpile.png', '2020/03/empty-container.png', '2020/03/loading-container.png', '2020/03/seal.jpg', '2020/03/documents.jpg');
 
 -- --------------------------------------------------------
 
@@ -265,6 +295,29 @@ INSERT INTO `seal_numbers` (`id`, `seal_number`, `created_at`, `modified_at`) VA
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `shipping_agent`
+--
+
+CREATE TABLE IF NOT EXISTS `shipping_agent` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Shiping agent' AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `shipping_agent`
+--
+
+INSERT INTO `shipping_agent` (`id`, `name`, `created_at`, `modified_at`) VALUES
+(1, 'Shipping Agent - A', '2020-03-31 01:18:38', '2020-03-31 07:48:38'),
+(2, 'Shipping Agent - B', '2020-03-31 01:18:51', '2020-03-31 07:48:51'),
+(3, 'Shipping Agent - C', '2020-03-31 01:19:12', '2020-03-31 07:49:34');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `shipping_line`
 --
 
@@ -274,14 +327,16 @@ CREATE TABLE IF NOT EXISTS `shipping_line` (
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Shipping line' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Shipping line' AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `shipping_line`
 --
 
 INSERT INTO `shipping_line` (`id`, `name`, `created_at`, `modified_at`) VALUES
-(1, 'Shipping Line - 1', '2020-03-29 00:00:00', '2020-03-29 13:35:29');
+(1, 'Shipping Line - 1', '2020-03-29 00:00:00', '2020-03-29 13:35:29'),
+(2, 'Shipping Line - 2', '2020-03-29 00:00:00', '2020-03-29 13:35:29'),
+(3, 'Shipping Line - 3', '2020-03-29 00:00:00', '2020-03-29 13:35:29');
 
 -- --------------------------------------------------------
 
@@ -342,11 +397,11 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `users_groups_id`, `country_id`, `company_id`, `yard_id`, `user_name`, `first_name`, `last_name`, `email`, `password`, `phone`, `location`, `image`, `status`, `app_access_days`, `rootwaystrash`, `rootwaysstatus`, `token`, `lastlogin`, `created_at`, `modified_at`) VALUES
-(1, 1, 0, 0, 0, 'superadmin', 'Indicaa Group', 'Admin', 'superadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', 'Sydney, Australia', '', 'permanent', 0, 0, 0, '', '2020-03-26 18:43:55', '2020-03-18 00:00:00', '2020-03-26 13:13:55'),
-(2, 2, 0, 0, 0, 'manager', 'Indicaa Group ', 'Manager', 'mamager@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-03-19 12:32:10', '2020-03-18 00:00:00', '2020-03-19 11:32:10'),
-(3, 3, 0, 0, 0, 'countryadmin', 'Indicaa Group ', 'Country Admin', 'countryadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-03-19 12:19:35', '2020-03-18 00:00:00', '2020-03-19 11:19:35'),
-(4, 4, 0, 0, 0, 'emoadmin', 'Indicaa Group ', 'EMO Admin', 'emoadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-03-28 14:41:59', '2020-03-18 00:00:00', '2020-03-28 09:11:59'),
-(5, 5, 0, 0, 0, 'countrymanager', 'Indicaa Group ', 'Country Manager', 'countrymanager@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-03-29 21:05:26', '2020-03-18 00:00:00', '2020-03-29 15:35:26'),
+(1, 1, 0, 0, 0, 'superadmin', 'Indicaa Group', 'Admin', 'superadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', 'Sydney, Australia', '', 'permanent', 0, 0, 0, '', '2020-04-02 14:44:45', '2020-03-18 00:00:00', '2020-04-02 09:14:45'),
+(2, 2, 0, 0, 0, 'manager', 'Indicaa Group ', 'Manager', 'mamager@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-02 14:42:42', '2020-03-18 00:00:00', '2020-04-02 09:12:42'),
+(3, 3, 0, 0, 0, 'countryadmin', 'Indicaa Group ', 'Country Admin', 'countryadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-02 14:36:42', '2020-03-18 00:00:00', '2020-04-02 09:06:42'),
+(4, 4, 0, 0, 0, 'emoadmin', 'Indicaa Group ', 'EMO Admin', 'emoadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-02 14:33:12', '2020-03-18 00:00:00', '2020-04-02 09:03:12'),
+(5, 5, 0, 0, 0, 'countrymanager', 'Indicaa Group ', 'Country Manager', 'countrymanager@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-03 11:14:40', '2020-03-18 00:00:00', '2020-04-03 05:44:40'),
 (6, 6, 1, 3, 1, 'inspector', 'Indicaa Group ', 'Inspector', 'inspector@gmail.com', '=UlVKdFVYZ1cidkSyRVbwZVZHhDeUZlUTJmRSFVVsRmTZdlUHZVb0gnVGFUP', '1234567890', 'Sydney, Australia', 'test.jpg', 'permanent', 0, 0, 0, '07ad28d62d80d8ac8bd65814a3fcb17a', '2020-03-21 06:23:42', '2020-03-18 00:00:00', '2020-03-25 06:58:42'),
 (8, 6, 0, 0, 0, 'test', 'nisha', 'Testing', 'test@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', 'tst loc', '', 'limit_of_days', 600, 0, 0, 'dfbbd97a8036ea9a7e96d03b0f8d785b', '0000-00-00 00:00:00', '2020-03-20 08:15:02', '2020-03-24 11:42:13');
 
@@ -396,12 +451,12 @@ CREATE TABLE IF NOT EXISTS `users_logins` (
 
 INSERT INTO `users_logins` (`tempid`, `rootwaysusername`, `rootwayssessionid`, `groupuserid`, `actiontime`) VALUES
 ('==QVWp0VUhlVTJFbahkTWZlWjtmS2olRWdlYGZFUNRlQX5kVWZkVsx2Qi1mUvRmRk5UTFZ1VWtWODZFbwZ0UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '=AFVxI0VrZFMWJjVZF2R4dVZsx2cUV1Y1YVMSZ1YGZlWVxmSzZFbsNnUsRGVU1GeXVGSOhVVB1TP', '==QVWp0VUhFcSJFbaRkTWZVYjxmWVRFbOdlYGZFUNRlQX5kVWZkVsx2Qi1mUvRmRk5UTFZ1VWtWODZFbwZ0UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '', '2020-03-18 13:46:16'),
-('==QVWp0VUVlTT1UVxMzVtRnVS1GaFplVSFmYGZFUWpmSX5kVWdkVuBnbidlUvRmRk5UTFZ1cWtWODZFbwZ0UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '=AVVGdkVuhmSWxGZxMGRGVVYWp1RaRlWLJmVKJ3YFpVYTVEcHVVMa9mYGplNX1GeONFMwVnVY50USJjSzdVb4RVTXh3cZVlWXZlRSpHZGRWU', '==QVWp0VUVlTTJ2RWR0Vth3VS1GaxplVkFmYGZFUWpmSX5kVWdkVuBnbidlUvRmRk5UTFZ1cWtWODZFbwZ0UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaOJlRaNVTWJVU', '2020-03-19 12:20:34'),
-('==QVWp0VUZlTT1UVxI3VtR3VStmSFplVkFmYGZVUWxGZp5kVWdkVuBnbidlUvRmRk5UTFZ1cWtWODZFbwZ0UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '=AVVGdkVuhmSWxGZxMGRGVVYWp1RaRlWLJmVKJ3YFpVYTVEcHVVMa9mYGplNX1GeONFMwVnVY50USJjSzdVb4RVTXh3cZVlWXZlRSpHZGRWU', '==QVWp0VUVlTTJ2RKNzYGRmWjxmWFRFboFmYGZVUWxGZp5kVWdkVuBnbidlUvRmRk5UTFZ1cWtWODZFbwZ0UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaOJlRaNVTWJVU', '2020-03-19 12:20:34'),
-('==QVWp0VUZlTTJ2RKNzYHRnVSxmWVRVbodUYsZVUNRlQX5kVsVkVsZ1ShJjUUZFbWBVTFVFeW5WT1YlVwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUVlTTJFbaR0Vth3VS1GaxplVwdUYsZVUNRlQX5kVsVkVsZ1ShJjUUZFbWBVTFVFeW5WT1YlVwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-03-26 18:44:06'),
-('==QVWp0VUhFcSJ2RGx0UshmWjxmWxRFbSdlYGZlUNRlQX5kVsVkVsx2Qi1mUvRmRk9UTFVFeW5WT1YlVwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUhFcSJFbkNzVth3VSxmWVRFbOdlYGZlUNRlQX5kVsVkVsx2Qi1mUvRmRk9UTFVFeW5WT1YlVwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-03-26 18:44:06'),
-('==QVWp0VUVlTTJ2RWR1UtVjVS1GeFRVbotkUH5UUWpmSX5kVWdkVuZ1UidlUYZFbW5UTVZ1cWtWODZFbwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '=AlVGhUVup0cNFjWadlaG5kVwAXcV5WW4JlVaxkUsRmVWtmSZZVMnhnVwUTSTpmSXNleshlVGR2USJjSzdVb4RVTXh3cZVlWXZlRSpHZGRWU', '==QVWp0VUhlVTJ2RGBlTWZVYjxmSFRlVatmUt5UUWpmSX5kVWdkVuZ1UidlUYZFbW5UTVZ1cWtWODZFbwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaVXTWJVU', '2020-03-29 21:11:00'),
-('==QVWp0VUVlTTJFbah1YGplWjxmWFRFbSdlYGZVUWpmSX5kVWZkVuBnUidlUYZFbWBVTFZ1cWtWODZFbwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '=AlVGhUVup0cNFjWadlaG5kVwAXcV5WW4JlVaxkUsRmVWtmSZZVMnhnVwUTSTpmSXNleshlVGR2USJjSzdVb4RVTXh3cZVlWXZlRSpHZGRWU', '==QVWp0VUhFcSJ2RKNzYHRnVStmSxplVadlYGZVUWpmSX5kVWZkVuBnUidlUYZFbWBVTFZ1cWtWODZFbwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaVXTWJVU', '2020-03-29 21:11:00');
+('==QVWp0VUZlTTJ2RGB1YHFjVS1GexRVbGdUYsZFUNRlQT5kVWZkVuZUYhJjUzRmRk9UTFZ1cWtGOxYlVwh3UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUZlTTJ2RWBlTXR3VSxmSVRlVSFmYGZFUNRlQT5kVWZkVuZUYhJjUzRmRk9UTFZ1cWtGOxYlVwh3UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-02 14:44:45'),
+('==QVWp0VUZlTTJ2RKNzYHRnVSxmWVRVbodUYsZVUNRlQX5kVsVkVsZ1ShJjUUZFbWBVTFVFeW5WT1YlVwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUVlTTJFbaR0Vth3VS1GaxplVwdUYsZVUNRlQX5kVsVkVsZ1ShJjUUZFbWBVTFVFeW5WT1YlVwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-02 14:44:45'),
+('==QVWp0VUhFcSJ2RGx0UshmWjxmWxRFbSdlYGZlUNRlQX5kVsVkVsx2Qi1mUvRmRk9UTFVFeW5WT1YlVwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUhFcSJFbkNzVth3VSxmWVRFbOdlYGZlUNRlQX5kVsVkVsx2Qi1mUvRmRk9UTFVFeW5WT1YlVwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-02 14:44:45'),
+('==QVWp0VUhlVTJ2RGR1UtRnVSxmSFRlVS9mUt5UUNRlQX5kVWZkVuBnQi1mUUZFbWBVTFZ1VWtGOxYlVwh3UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUZlTTJ2RKJ3UtRnVS1GaxplVo9mUt5UUNRlQX5kVWZkVuBnQi1mUUZFbWBVTFZ1VWtGOxYlVwh3UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-02 14:44:45'),
+('==QVWp0VUVlTTJFbaB1YHh3VS1GaFplVwNUYsZFUNRlQT5kVWZkVuZ1bidlUYZFbW5UTFZ1RWNTTxIlVvJzUrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '=AlVGhUVup0cNFjWadlaG5kVwAXcV5WW4JlVaxkUsRmVWtmSZZVMnhnVwUTSTpmSXNleshlVGR2USJjSzdVb4RVTXh3cZVlWXZlRSpHZGRWU', '==QVWp0VUZlTTJFbkJ3YGplWjxmSFRlVSdlYGZFUNRlQT5kVWZkVuZ1bidlUYZFbW5UTFZ1RWNTTxIlVvJzUrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaVXTWJVU', '2020-04-03 11:29:40'),
+('==QVWp0VUhFcSJFbkp3YGRmWjtmSFRlVWFmYGZVUNRlQT5kVWZkVuZ0ShJjUUZFbW9UTFVFeW5WTxIlVvJzUrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUhFcSJ2RKNzYHh3VStmSVRlVkFmYGZVUNRlQT5kVWZkVuZ0ShJjUUZFbW9UTFVFeW5WTxIlVvJzUrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-02 14:44:45');
 
 -- --------------------------------------------------------
 
@@ -526,7 +581,32 @@ INSERT INTO `users_login_histories` (`users_id`, `ondatetime`, `ip`, `browser`, 
 (5, '2020-03-28 17:24:43', '127.0.0.1', 'Mozilla Firefox', 1),
 (5, '2020-03-29 18:03:56', '127.0.0.1', 'Mozilla Firefox', 1),
 (5, '2020-03-29 19:08:24', '127.0.0.1', 'Mozilla Firefox', 1),
-(5, '2020-03-29 21:05:26', '127.0.0.1', 'Mozilla Firefox', 1);
+(5, '2020-03-29 21:05:26', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-03-30 18:27:45', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-03-30 18:38:56', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-03-31 10:29:58', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-03-31 12:21:08', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-03-31 12:53:24', '::1', 'Google Chrome', 1),
+(5, '2020-03-31 15:16:34', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-03-31 17:54:41', '::1', 'Google Chrome', 1),
+(5, '2020-04-01 09:51:32', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-01 11:15:11', '::1', 'Google Chrome', 1),
+(5, '2020-04-01 12:13:40', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-01 14:02:13', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-01 15:11:48', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-02 10:48:42', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-02 11:57:59', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-02 12:58:09', '127.0.0.1', 'Mozilla Firefox', 1),
+(6, '2020-04-02 14:29:26', '::1', 'Google Chrome', 0),
+(5, '2020-04-02 14:29:46', '::1', 'Google Chrome', 1),
+(4, '2020-04-02 14:33:12', '::1', 'Google Chrome', 1),
+(3, '2020-04-02 14:36:42', '::1', 'Google Chrome', 1),
+(2, '2020-04-02 14:42:42', '::1', 'Google Chrome', 1),
+(1, '2020-04-02 14:44:45', '::1', 'Google Chrome', 1),
+(5, '2020-04-02 15:43:32', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-02 17:23:00', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-03 09:50:50', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-03 11:14:40', '127.0.0.1', 'Mozilla Firefox', 1);
 
 -- --------------------------------------------------------
 
@@ -543,7 +623,7 @@ CREATE TABLE IF NOT EXISTS `users_permission` (
   `edit` tinyint(1) NOT NULL DEFAULT '0',
   `del` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=97 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=99 ;
 
 --
 -- Dumping data for table `users_permission`
@@ -568,7 +648,9 @@ INSERT INTO `users_permission` (`id`, `users_groups_id`, `filename`, `view`, `ad
 (93, 4, 'emo_empty_depot', 1, 1, 1, 1),
 (94, 4, 'emo_supplier', 1, 1, 1, 1),
 (95, 5, 'cm_containers', 1, 1, 1, 1),
-(96, 5, 'cm_container', 1, 1, 1, 1);
+(96, 5, 'cm_container', 1, 1, 1, 1),
+(97, 1, 'sa_branch', 1, 1, 1, 1),
+(98, 4, 'emo_shipping_agent', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 

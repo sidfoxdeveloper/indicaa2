@@ -20,3 +20,5 @@ define('TB_SEAL_NUMBERS', 'seal_numbers');
 define('TB_EMPTY_DEPOT', 'empty_depot');
 define('TB_SUPPLIER', 'supplier');
 define('TB_SHIPPING_LINE', 'shipping_line');
+define('TB_BRANCH_CODE', 'branch_code');
+define('TB_SHIPPING_AGENT', 'shipping_agent');

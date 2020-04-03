@@ -77,6 +77,16 @@
                         <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_MATERIAL_CODE_EDIT;?>">Add Material Code</a>
                     </div>
                 </li>
+                <li class="nav-item dropdown <?php if( $CP == SA_BRANCH_LIST || $CP == SA_BRANCH_EDIT ){ echo 'open'; }?>" >
+                    <a class="nav-link dropdown-toggle" href="#">
+                        <span class="ks-icon la la-barcode"></span>
+                        <span>Branch codes</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_BRANCH_LIST;?>">Branch Codes List</a>
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_BRANCH_EDIT;?>">Add Branch Code</a>
+                    </div>
+                </li>
                 
         <?php 
             endif;
@@ -106,6 +116,16 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="<?php echo URL_BASEADMIN.EMO_SUPPLIER_LIST;?>">Suppliers</a>
                         <a class="dropdown-item" href="<?php echo URL_BASEADMIN.EMO_SUPPLIER_EDIT;?>">Add Supplier</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown <?php if( $CP == EMO_SHIPPING_AGENT_LIST || $CP == EMO_SHIPPING_AGENT_EDIT ){ echo 'open'; } ?>">
+                    <a class="nav-link dropdown-toggle" href="#">
+                        <span class="ks-icon la la-ship"></span>
+                        <span>Shipping Agents</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.EMO_SHIPPING_AGENT_LIST;?>">Agents</a>
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.EMO_SHIPPING_AGENT_EDIT;?>">Add Agent</a>
                     </div>
                 </li>
                 
