@@ -721,6 +721,95 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                                         <input type="date" name="grn_date" id="grn_date" class="form-control" > 
                                                                     </div>
                                                                 </div>
+                                                        
+                                                                <?php /* ?>
+                                                                <div class="form-group row">
+                                                                    <label for="base_port_used_for_freight_costing" class="col-sm-3 form-control-label">Shipping Agent</label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php
+                                                                            $shipping_agent = fetchqry('*', TB_SHIPPING_AGENT, array() );
+                                                                            echo $shipping_agent['name'];
+                                                                            ?>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <select name="base_port_used_for_freight_costing" id="base_port_used_for_freight_costing" class="form-control">
+                                                                            <option value="">Select Shipping Agent</option>
+                                                                            <?php
+                                                                            $shipping_agent = selectqry('*', TB_SHIPPING_AGENT, array(), " `name` ASC ");
+                                                                            while( $row = mysqli_fetch_assoc($shipping_agent) ):
+                                                                                echo '<option value="'.$row['id'].'" >'.$row['name'].'</option>';
+                                                                            endwhile;
+                                                                            ?>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <?php */ ?>
+                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="ls_number" class="col-sm-3 form-control-label">LS Number</label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php echo $ls_number; ?>                        
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <input type="text" name="ls_number" id="ls_number" class="form-control" > 
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="vo_number" class="col-sm-3 form-control-label">VO Number</label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php echo $vo_number; ?>                        
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <input type="text" name="vo_number" id="vo_number" class="form-control" > 
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="vo_number" class="col-sm-3 form-control-label">VO Number</label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php echo $vo_number; ?>                        
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <input type="text" name="vo_number" id="vo_number" class="form-control" > 
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="status" class="col-sm-3 form-control-label">Status</label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php
+                                                                            if($status == 'draft'):
+                                                                                echo 'Draft';
+                                                                            elseif($status == 'pending_upload'):
+                                                                                echo 'Pendign Upload';
+                                                                            elseif($status == 'verified_by_country_manager'):    
+                                                                                echo 'Verified';
+                                                                            elseif($status == 'not_verified_by_country_manager'):        
+                                                                                echo 'Not Verified';
+                                                                            endif;                                                                            
+                                                                            ?>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <select name="status" id="status" class="form-control">
+                                                                            <option>Select Status</option>
+                                                                            <option value="verified_by_country_manager">Verified</option>
+                                                                            <option value="not_verified_by_country_manager">Not Verified</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                        
                                                                         
                                                                 <div class="form-group row">
                                                                     <div class="col-sm-6">
@@ -862,9 +951,59 @@ if (isset($_POST['addnew'])) {
                 $arr['seal_number'] = $sn;
         endif;
         if( !isEmpty($_POST['exchange_rate']) ):
-                $temp= implode(',', $_POST['exchange_rate']);
+                $temp = implode(',', $_POST['exchange_rate']);
                 $arr['exchange_rate'] = $temp;
         endif;
+        if( !isEmpty($_POST['branch_code_id']) ):
+                $arr['branch_code_id'] = $_POST['branch_code_id'];
+        endif;
+        if( !isEmpty($_POST['shipping_agent_id']) ):
+                $arr['shipping_agent_id'] = $_POST['shipping_agent_id'];
+        endif;
+        if( !isEmpty($_POST['transporter']) ):
+                $arr['transporter'] = $_POST['transporter'];
+        endif;
+        if( !isEmpty($_POST['shipped_to_storage']) ):
+                $arr['shipped_to_storage'] = $_POST['shipped_to_storage'];
+        endif;
+        if( !isEmpty($_POST['storage']) ):
+                $arr['storage'] = $_POST['storage'];
+        endif;
+        if( !isEmpty($_POST['shifted_to_terminal']) ):
+                $arr['shifted_to_terminal'] = $_POST['shifted_to_terminal'];
+        endif;
+        if( !isEmpty($_POST['terminal']) ):
+                $arr['terminal'] = $_POST['terminal'];
+        endif;
+        if( !isEmpty($_POST['shifted_to_port']) ):
+                $arr['shifted_to_port'] = $_POST['shifted_to_port'];
+        endif;
+        if( !isEmpty($_POST['port_of_loading']) ):
+                $arr['port_of_loading'] = $_POST['port_of_loading'];
+        endif;
+        if( !isEmpty($_POST['grn_number']) ):
+                $arr['grn_number'] = $_POST['grn_number'];
+        endif;
+        if( !isEmpty($_POST['grn_date']) ):
+                $arr['grn_date'] = $_POST['grn_date'];
+        endif;
+        if( !isEmpty($_POST['']) ):
+                $arr[''] = $_POST[''];
+        endif;
+//        if( !isEmpty($_POST['']) ):
+//                $arr[''] = $_POST[''];
+//        endif;
+//        if( !isEmpty($_POST['']) ):
+//                $arr[''] = $_POST[''];
+//        endif;
+//        if( !isEmpty($_POST['']) ):
+//                $arr[''] = $_POST[''];
+//        endif;
+//        if( !isEmpty($_POST['']) ):
+//                $arr[''] = $_POST[''];
+//        endif;
+        
+        
         
         if( count($arr) > 0 ):
             $update = updateqry($arr, array("id=" => $_REQUEST['id']), $table);
