@@ -39,6 +39,9 @@ define('SA_MATERIAL_CODE_EDIT', 'sa_material_code_edit.php');
 define('SA_BRANCH_LIST', 'sa_branch_list.php');
 define('SA_BRANCH_EDIT', 'sa_branch_edit.php');
 
+define('SA_BASE_PORT_LIST', 'sa_base_port_list.php');
+define('SA_BASE_PORT_EDIT', 'sa_base_port_edit.php');
+
 /**  Country Manager  **/
 define('CM_HOME', 'cm_home.php');
 define('CM_CONTAINERS_LIST', 'cm_containers_list.php');

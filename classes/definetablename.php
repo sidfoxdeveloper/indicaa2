@@ -22,3 +22,4 @@ define('TB_SUPPLIER', 'supplier');
 define('TB_SHIPPING_LINE', 'shipping_line');
 define('TB_BRANCH_CODE', 'branch_code');
 define('TB_SHIPPING_AGENT', 'shipping_agent');
+define('TB_BASE_PORT_USED_FOR_FREIGHT_COSTING', 'base_port_used_for_freight_costing');

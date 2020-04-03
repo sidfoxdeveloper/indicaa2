@@ -45,7 +45,6 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
         $supplier = $data['supplier'];
         $seal_number = $data['seal_number'];
         $exchange_rate= $data['exchange_rate'];
-        $shipping_agent = $data['shipping_agent'];
         $transporter = $data['transporter'];
         $shipped_to_storage = $data['shipped_to_storage'];
         $storage = $data['storage'];
@@ -592,7 +591,8 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                                     <div class="col-sm-4">
                                                                         <div class="form-control dark" >
                                                                             <?php
-                                                                            $shipping_agent = fetchqry('*', TB_SHIPPING_AGENT, array() );
+                                                                            echo $shipping_agent_id;
+                                                                            $shipping_agent = fetchqry('*', TB_SHIPPING_AGENT, array('id='=>$shipping_agent_id) );
                                                                             echo $shipping_agent['name'];
                                                                             ?>
                                                                         </div>
@@ -722,14 +722,14 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                                     </div>
                                                                 </div>
                                                         
-                                                                <?php /* ?>
+                                                                
                                                                 <div class="form-group row">
                                                                     <label for="base_port_used_for_freight_costing" class="col-sm-3 form-control-label">Shipping Agent</label>
                                                                     <div class="col-sm-4">
                                                                         <div class="form-control dark" >
                                                                             <?php
-                                                                            $shipping_agent = fetchqry('*', TB_SHIPPING_AGENT, array() );
-                                                                            echo $shipping_agent['name'];
+                                                                            $tmp = fetchqry( '*', TB_BASE_PORT_USED_FOR_FREIGHT_COSTING, array('id='=>$base_port_used_for_freight_costing) );
+                                                                            echo $tmp['name'];
                                                                             ?>
                                                                         </div>
                                                                     </div>
@@ -737,15 +737,15 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                                         <select name="base_port_used_for_freight_costing" id="base_port_used_for_freight_costing" class="form-control">
                                                                             <option value="">Select Shipping Agent</option>
                                                                             <?php
-                                                                            $shipping_agent = selectqry('*', TB_SHIPPING_AGENT, array(), " `name` ASC ");
-                                                                            while( $row = mysqli_fetch_assoc($shipping_agent) ):
+                                                                            $tmp = selectqry('*', TB_BASE_PORT_USED_FOR_FREIGHT_COSTING, array(), " `name` ASC ");
+                                                                            while( $row = mysqli_fetch_assoc($tmp) ):
                                                                                 echo '<option value="'.$row['id'].'" >'.$row['name'].'</option>';
                                                                             endwhile;
                                                                             ?>
                                                                         </select>
                                                                     </div>
                                                                 </div>
-                                                                <?php */ ?>
+                                                                
                                                         
                                                                 <div class="form-group row">
                                                                     <label for="ls_number" class="col-sm-3 form-control-label">LS Number</label>
@@ -810,6 +810,113 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                                     </div>
                                                                 </div>
                                                         
+                                                                <div class="form-group row">
+                                                                    <label for="vessel_name" class="col-sm-3 form-control-label">Vessel Name</label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php echo $vessel_name; ?>                        
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <input type="text" name="vessel_name" id="vessel_name" class="form-control" > 
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="voyage" class="col-sm-3 form-control-label">Voyage</label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php echo $voyage; ?>                        
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <input type="text" name="voyage" id="voyage" class="form-control" > 
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="bli_number" class="col-sm-3 form-control-label">SOB Date</label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php echo $bli_number; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <input type="text" name="bli_number" id="bli_number" class="form-control" > 
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="original_bl_number" class="col-sm-3 form-control-label">Original BL Number</label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php echo $original_bl_number; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <input type="text" name="original_bl_number" id="original_bl_number" class="form-control" > 
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="ho_order_number" class="col-sm-3 form-control-label">HO Order Number</label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php echo $ho_order_number; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <input type="text" name="ho_order_number" id="ho_order_number" class="form-control" > 
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="ex_yard_price" class="col-sm-3 form-control-label">EX Yard Price</label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php echo $ex_yard_price; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <input type="text" name="ex_yard_price" id="ex_yard_price" class="form-control" > 
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="cnf" class="col-sm-3 form-control-label">CNF</label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php echo $cnf; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <input type="text" name="cnf" id="cnf" class="form-control" > 
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="fob" class="col-sm-3 form-control-label">FOB</label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php echo $fob; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <input type="text" name="fob" id="fob" class="form-control" > 
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="fca" class="col-sm-3 form-control-label">FCA</label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php echo $fca; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <input type="text" name="fca" id="fca" class="form-control" > 
+                                                                    </div>
+                                                                </div>
                                                                         
                                                                 <div class="form-group row">
                                                                     <div class="col-sm-6">

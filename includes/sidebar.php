@@ -88,6 +88,17 @@
                     </div>
                 </li>
                 
+                <li class="nav-item dropdown <?php if( $CP == SA_BASE_PORT_LIST || $CP == SA_BASE_PORT_EDIT ){ echo 'open'; }?>" >
+                    <a class="nav-link dropdown-toggle" href="#">
+                        <span class="ks-icon la la-ship"></span>
+                        <span>Base Port</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_BASE_PORT_LIST;?>">Base Port List</a>
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_BASE_PORT_EDIT;?>">Add Base Port</a>
+                    </div>
+                </li>
+                
         <?php 
             endif;
             if( decode($_SESSION['groupuserid']) == 4 ): ?>
