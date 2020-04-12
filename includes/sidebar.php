@@ -37,6 +37,16 @@
                         <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_COUNTRY_EDIT;?>">Add Country</a>
                     </div>
                 </li>
+                <li class="nav-item dropdown <?php if($CP == SA_CURRENCY_LIST || $CP == SA_CURRENCY_EDIT){ echo 'open'; }?>">
+                    <a class="nav-link dropdown-toggle" href="#">
+                        <span class="ks-icon la la-dollar"></span>
+                        <span>Currency</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_CURRENCY_LIST;?>">Currency</a>
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_CURRENCY_EDIT;?>">Add Currency</a>
+                    </div>
+                </li>
                 <li class="nav-item dropdown <?php if( $CP == SA_YARDS_LIST || $CP == SA_YARDS_EDIT ){ echo 'open'; }?>">
                     <a class="nav-link dropdown-toggle" href="#">
                         <span class="ks-icon la la-ship"></span>
@@ -109,6 +119,12 @@
                         <span>EMO Admin Dashboard</span>
                     </a>
                 </li>
+                <li class="nav-item ">
+                    <a class="nav-link " href="<?php echo URL_BASEADMIN.EMO_CONTAINER_LIST; ?>">
+                        <span class="ks-icon la la-ship"></span>
+                        <span>Containers</span>
+                    </a>                    
+                </li>
                 <li class="nav-item dropdown <?php if( $CP == EMO_EMPTY_DEPOT_LIST || $CP == EMO_EMPTY_DEPOT_EDIT ){ echo 'open'; } ?>">
                     <a class="nav-link dropdown-toggle" href="#">
                         <span class="ks-icon la la-ship"></span>
@@ -139,6 +155,12 @@
                         <a class="dropdown-item" href="<?php echo URL_BASEADMIN.EMO_SHIPPING_AGENT_EDIT;?>">Add Agent</a>
                     </div>
                 </li>
+                <li class="nav-item ">
+                    <a class="nav-link " href="<?php echo URL_BASEADMIN.EMO_SETTINGS_EDIT; ?>">
+                        <span class="ks-icon la la-cog"></span>
+                        <span>Settings</span>
+                    </a>                    
+                </li>
                 
         <?php        
             endif;
@@ -150,11 +172,16 @@
                         <span>Country Manager Dashboard</span>
                     </a>
                 </li>
-                
                 <li class="nav-item ">
                     <a class="nav-link " href="<?php echo URL_BASEADMIN.CM_CONTAINERS_LIST; ?>">
                         <span class="ks-icon la la-ship"></span>
                         <span>Containers</span>
+                    </a>                    
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link " href="<?php echo URL_BASEADMIN.CM_SETTINGS_EDIT; ?>">
+                        <span class="ks-icon la la-cog"></span>
+                        <span>Settings</span>
                     </a>                    
                 </li>
                 

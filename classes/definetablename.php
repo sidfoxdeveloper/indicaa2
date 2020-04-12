@@ -23,3 +23,12 @@ define('TB_SHIPPING_LINE', 'shipping_line');
 define('TB_BRANCH_CODE', 'branch_code');
 define('TB_SHIPPING_AGENT', 'shipping_agent');
 define('TB_BASE_PORT_USED_FOR_FREIGHT_COSTING', 'base_port_used_for_freight_costing');
+define('TB_PORT_OF_LOADING', 'port_of_loading');
+define('TB_STORAGES', 'storages');
+define('TB_TERMINALS', 'terminals');
+
+
+define('TB_CONTAINER_ARCHIEVE', 'container_archieve');
+define('TB_CURRENCY', 'currency');
+define('TB_SETTINGS_CM', 'settings_cm');
+define('TB_SETTINGS_EMO', 'settings_emo');

@@ -18,11 +18,29 @@ if ($permission['view']) {
     }
 
     $Limit = DEFAULT_LIMIT;
-    $qry = "select c.* from " . $table . " c where 1 ";
-    if ($swords) {
-        $qry .= "and 1 ";
-        $paginationback .= "&s=" . $swords;
-    }
+    $qry = "select c.*, s.name as supplier_name from " . $table . " as c ";
+    $qry .= " LEFT JOIN `".TB_USERS."` as u ON u.id=c.user_id";
+    $qry .= " LEFT JOIN `".TB_SUPPLIER."` as s ON s.id=c.supplier_id";
+    
+    $qry .= " where 1 ";
+    
+    /** For Search **/
+    if( !isEmpty($_REQUEST['search_text']) ):
+        $qry .= "AND";
+        $qry .= " (c.`container_number` LIKE '%".$_REQUEST['search_text']."%'  ";
+        $qry .= " OR s.`name` LIKE '%".$_REQUEST['search_text']."%') ";
+    endif;
+    
+    if( !isEmpty($_REQUEST['filter_date']) ):
+        $qry .= "AND";
+        $date = date('Y-m-d', strtotime($_REQUEST['filter_date']) );
+        $qry .= " c.created_at <= '".$date."' ";
+    endif;
+    
+    if( !isEmpty($_REQUEST['inspector_id']) ):
+        $qry .= "AND";
+        $qry .= " c.user_id = '".$_REQUEST['inspector_id']."' ";
+    endif;
 
     /** For Group By * */
     $qry .= " group by c.id ";
@@ -39,8 +57,13 @@ if ($permission['view']) {
     $sel = mysqli_query($con, $qry . " LIMIT " . ($page - 1) * $Limit . ",$Limit");
     $display = mysqli_num_rows($sel);
     
-    $cRes = selectqry('id', $table, array('status!='=>'verified_by_country_manger') );
-    $containerNotVerified = mysqli_num_rows($cRes);
+    
+    $totalContainers = $containersVerified = $containerNotVerified = 0;
+    $cRes = selectqry( 'id', $table, array() );
+    $totalContainers = mysqli_num_rows($cRes);
+    $vcRes = selectqry( 'id', $table, array('status='=>'verified_by_country_manager') );
+    $containersVerified = mysqli_num_rows($vcRes);
+    $containerNotVerified = ( $totalContainers - $containersVerified );
     
     ?>
     <!DOCTYPE html>
@@ -48,6 +71,19 @@ if ($permission['view']) {
         <!-- BEGIN HEAD -->
         <head>
              <?php include('includes/head.php'); ?> 
+            
+            <link rel="stylesheet" type="text/css" href="<?php echo URL_BASEADMIN; ?>libs/prism/prism.css"> <!-- original -->
+            <link rel="stylesheet" type="text/css" href="<?php echo URL_BASEADMIN; ?>libs/flatpickr/flatpickr.min.css"> <!-- original -->
+            <link rel="stylesheet" type="text/css" href="<?php echo URL_BASEADMIN; ?>assets/styles/libs/flatpickr/flatpickr.min.css"> <!-- customization -->
+            <!--  jQuery -->
+            <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+            <!-- Isolated Version of Bootstrap, not needed if your site already uses Bootstrap -->
+            <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+
+            <!-- Bootstrap Date-Picker Plugin -->
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>  
         </head>
         <body class="ks-navbar-fixed ks-sidebar-default ks-sidebar-position-fixed ks-page-header-fixed ks-theme-primary ks-page-loading"> 
             <!-- remove ks-page-header-fixed to unfix header -->
@@ -68,7 +104,53 @@ if ($permission['view']) {
                     <div class="ks-page-content">
                         <div class="ks-page-content-body">
                             <div class="ks-dashboard-tabbed-sidebar">
-                                <div class="ks-dashboard-tabbed-sidebar-widgets">                 
+                                <div class="ks-dashboard-tabbed-sidebar-widgets">
+                                    <!-- Filters -->
+                                    <form action="" method="get">
+                                        <div class="row" >
+                                                <div class="col-sm-2">
+                                                    <h5 class="ks-main-title">VIEW CONTAINERS</h5>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <h5 class="text-right ks-main-title">Filter By</h5>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="search_text" id="search_text" class="form-control" value="<?php echo $_REQUEST['search_text']; ?>" placeholder="Search" > 
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <?php 
+                                                    if( !isEmpty($_REQUEST['filter_date']) ):
+                                                        $filter_date = date( 'Y-m-d', strtotime($_REQUEST['filter_date']) );
+                                                    endif;
+                                                    ?>
+                                                    <input type="date" name="filter_date" id="filter_date" class="calendar form-control" value="<?php echo $filter_date; ?>" placeholder="Date" > 
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <?php
+                                                    $sel_users = selectqry('*', TB_USERS, array('users_groups_id='=>'6'), " `first_name` ASC ");
+                                                    ?>
+                                                    <select name="inspector_id" id="inspector_id" class="form-control">
+                                                        <option>Inspector</option>
+                                                        <?php
+                                                        while($row = mysqli_fetch_assoc($sel_users)):
+                                                            if( $_REQUEST['inspector_id'] == $row['id'] ):
+                                                                $selected = "selected";
+                                                            else:
+                                                                $selected = "";
+                                                            endif;
+                                                            
+                                                            echo '<option value='.$row['id'].' '.$selected.' >'.$row['first_name'] .' '.$row['last_name'].'</option>';
+
+                                                        endwhile;
+                                                        ?>
+                                                    </select>
+                                                </div>                                        
+                                                <div class="col-sm-1">
+                                                    <input type="submit" value="Filter" />
+                                                </div>
+                                        </div>
+                                    </form>    
+                                    <!-- Filters -->
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="card ks-card-widget ks-widget-table">
@@ -113,7 +195,24 @@ if ($permission['view']) {
                                                                         <td class="text-center">
                                                                             <a href="<?php echo URL_BASEADMIN . $viewpagename . $paginationback . '&id=' . $row['id'] . '&page=' . $page; ?>" class="btn btn-default btn-sm" title="View" >View</a>   
                                                                             <?php if($permission['edit']) { ?><a href="<?php echo URL_BASEADMIN . $editpagename . $paginationback . '&id=' . $row['id'] . '&page=' . $page; ?>" class="btn btn-primary btn-sm" title="Update" >Update</a><?php } ?>   
-                                                                            <?php /* if($permission['del']) { ?><a class="btn btn-danger btn-sm" href="javascript:" onclick="return deletesure('<?php echo $row['id'];?>', '<?php echo $table; ?>', '');">Delete</a><?php } */ ?>
+                                                                            
+                                                                            <?php
+                                                                            $archieveText = '';
+                                                                            $archieveUrl = '';
+                                                                            $archieveClass = '';
+                                                                            
+                                                                            $selArchieve = selectqry( 'id', TB_CONTAINER_ARCHIEVE, array('container_id='=>$row['id']) );
+                                                                            if( mysqli_num_rows($selArchieve) > 0 ): 
+                                                                                $archieveUrl = '#';
+                                                                                $archieveText = 'Archieved';
+                                                                                $archieveClass = 'btn-success';
+                                                                            else:
+                                                                                $archieveUrl = 'archieve.php?true&id='.$row['id'].'&page=1';
+                                                                                $archieveText = 'Archieve';
+                                                                                $archieveClass = 'btn-warning';
+                                                                            endif;
+                                                                            ?>
+                                                                            <a href="<?php echo URL_BASEADMIN . $archieveUrl; ?>" class="btn  <?php echo $archieveClass; ?>  btn-sm" title="<?php echo $archieveText; ?>" ><?php echo $archieveText; ?></a>                                                                            
                                                                         </td>
                                                                     </tr>
                                                                     <?php
@@ -139,6 +238,12 @@ if ($permission['view']) {
                 </div>
             </div>
             <?php include('includes/script_bottom.php'); ?>
+            <script src="<?php echo URL_BASEADMIN; ?>libs/flatpickr/flatpickr.min.js"></script>
+            <script src="<?php echo URL_BASEADMIN; ?>libs/prism/prism.js"></script>
+            <script>
+                //Date and Time Picker  
+                $(".calendar").flatpickr();
+            </script>
         </body>
     </html>
     <?php

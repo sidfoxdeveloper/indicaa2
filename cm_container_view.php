@@ -4,23 +4,17 @@ include('includes/script_top.php');
 <?php
 if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUEST['id'])) { ?>
     <?php
-    $pagename = "Container";
+    $pagename = "Container Details";
     $listpagename = CM_CONTAINERS_LIST;
     $table = TB_CONTAINERS;
     $created_at = date('Y-m-d H:i:s');
     
     if ($_REQUEST['id']) {
         
-        $pagetype = "Edit";
+        $pagetype = "View";
         $data = fetchqry("*", $table, array("id=" => $_REQUEST['id']));
-        $containerImage = fetchqry("*", TB_CONTAINER_IMAGES, array("container_id=" => $_REQUEST['id']));
         
-        $image_stock_pile = empty($containerImage['image_stock_pile']) ? "not-available.png" : $containerImage['image_stock_pile'];
-        $image_empty_container = empty($containerImage['image_empty_container']) ? "not-available.png" : $containerImage['image_empty_container'];
-        $image_container_loading = empty($containerImage['image_container_loading']) ? "not-available.png" : $containerImage['image_container_loading'];
-        $image_container_seal = empty($containerImage['image_container_seal']) ? "not-available.png" : $containerImage['image_container_seal'];
-        $image_documents = empty($containerImage['image_documents']) ? "not-available.png" : $containerImage['image_documents'];
-        
+        $container_id = $_REQUEST['id'];
         $country_id = $data['country_id'];
         $company_id = $data['company_id'];
         $yard_id = $data['yard_id'];
@@ -37,18 +31,18 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
         $net_weight_yard = $data['net_weight_yard'];
         $pay_load = $data['pay_load'];
         $empty_depot_name_id = $data['empty_depot_name_id'];
-        $material_code = $data['material_code'];
+        $material_code_id = $data['material_code_id'];
         $material_description = $data['material_description'];
         $material_quality_code = $data['material_quality_code'];
         $shipping_line_id = $data['shipping_line_id'];
-        $supplier = $data['supplier'];
-        $seal_number = $data['seal_number'];
+        $supplier_id = $data['supplier_id'];
+        $seal_number_id = $data['seal_number_id'];
         $exchange_rate= $data['exchange_rate'];
-        $shipping_agent = $data['shipping_agent'];
         $transporter = $data['transporter'];
         $shipped_to_storage = $data['shipped_to_storage'];
         $storage = $data['storage'];
         $shifted_to_terminal = $data['shifted_to_terminal'];
+        $shipped_to_terminal = $data['shipped_to_terminal'];
         $terminal = $data['terminal'];
         $shifted_to_port = $data['shifted_to_port'];
         $port_of_loading = $data['port_of_loading'];
@@ -62,14 +56,20 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
         $vessel_name = $data['vessel_name'];
         $voyage = $data['voyage'];
         $sob_date = $data['sob_date'];
-        $bli_number = $data['bli_number'];
+        $bli_date = $data['bli_date'];
         $original_bl_number = $data['original_bl_number'];
         $ho_order_number = $data['ho_order_number'];
         $ex_yard_price = $data['ex_yard_price'];
-        $cnf = $data['cnf'];
-        $fob = $data['fob'];
-        $fca = $data['fca'];
-        $created_at = date( 'd F, Y', strtotime($data['created_at']) );        
+        $cnf1 = $data['cnf1'];
+        $cnf2 = $data['cnf2'];
+        $cnf3 = $data['cnf3'];
+        $fob1 = $data['fob1'];
+        $fob2 = $data['fob2'];
+        $fob3 = $data['fob3'];
+        $fca1 = $data['fca1'];
+        $fca2 = $data['fca2'];
+        $fca3 = $data['fca3'];        
+        $created_at = date( 'd F, Y', strtotime($data['created_at']) );
         
     } 
     
@@ -119,15 +119,15 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                                         
                                     <form action="" name="mainform" id="mainform" method="post" enctype="multipart/form-data" onsubmit="return submitform();">
                                         <div class="row">
-                                            <div class="col-lg-10 ks-panels-column-section">
+                                            <div class="col-lg-12 ks-panels-column-section">
                                                 <div class="card">                                                
                                                     <div class="card-block">
                                                         <h5 class="card-title"><?php echo $pagename; ?></h5>
                                                         <div>
                                                             
                                                             <div class="form-group row">
-                                                                <label for="status" class="col-sm-2 form-control-label">Status</label>
-                                                                <div class="col-sm-10">
+                                                                <label for="status" class="col-sm-3 form-control-label">Status</label>
+                                                                <div class="col-sm-9">
                                                                     <div class="input-group">
                                                                         <?php
                                                                             if($status == 'draft'):
@@ -142,11 +142,10 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                                         ?>
                                                                     </div>
                                                                 </div>
-                                                            </div> 
-                                                            
+                                                            </div>
                                                             <div class="form-group row">
-                                                                <label for="country_id" class="col-sm-2 form-control-label">Country</label>
-                                                                <div class="col-sm-10">
+                                                                <label for="country_id" class="col-sm-3 form-control-label">Country / Origin</label>
+                                                                <div class="col-sm-9">
                                                                     <div class="input-group">
                                                                         <?php
                                                                         $sel_contries = fetchqry('*', TB_COUNTRIES, array('id='=>$country_id));
@@ -156,8 +155,8 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                                 </div>
                                                             </div>                                                            
                                                             <div class="form-group row">
-                                                                <label for="company_id" class="col-sm-2 form-control-label">Company</label>
-                                                                <div class="col-sm-10">
+                                                                <label for="company_id" class="col-sm-3 form-control-label">Company</label>
+                                                                <div class="col-sm-9">
                                                                     <div class="input-group">
                                                                         <?php
                                                                         $qCom = mysqli_query($con, "SELECT * FROM `".TB_COMPANIES."` WHERE id='".$company_id."' ");
@@ -166,359 +165,578 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                                         ?>
                                                                     </div>
                                                                 </div>
-                                                            </div>                                                            
+                                                            </div>
                                                             <div class="form-group row">
-                                                                <label for="yard_id" class="col-sm-2 form-control-label">Yard</label>
-                                                                <div class="col-sm-10">
+                                                                <label for="" class="col-sm-3 form-control-label">Empty Container Received date</label>
+                                                                <div class="col-sm-9">
+                                                                    <div class="input-group">
+                                                                        <?php echo date( 'd M, Y', strtotime($empty_container_received) ); ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 form-control-label">Container Placed Yard At</label>
+                                                                <div class="col-sm-9">
+                                                                    <div class="input-group">
+                                                                        <?php echo date( 'd M, Y', strtotime($container_placed_yard) ); ?>                                                                            
+                                                                    </div>
+                                                                </div>                                                 
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 form-control-label">Name of Yard(Loading Site)</label>
+                                                                <div class="col-sm-9">
                                                                     <div class="input-group">
                                                                         <?php
-                                                                        $qYard = mysqli_query($con, "SELECT * FROM `".TB_YARDS."` WHERE id='".$yard_id."' ");
-                                                                        $yard = mysqli_fetch_assoc($qYard);                                                                       
-                                                                        echo $yard['name'];                                                                        
+                                                                        $yards = fetchqry('*', TB_YARDS, array('id='=>$yard_id), " `name` ASC ");
+                                                                        echo $yards['name'];
                                                                         ?>
                                                                     </div>
                                                                 </div>
-                                                            </div>                                                            
+                                                            </div>
                                                             <div class="form-group row">
-                                                                <label for="empty_container_received" class="col-sm-2 form-control-label">Empty Container Received At</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">                         
-                                                                        <?php echo date('d M,Y', strtotime($empty_container_received));?>
+                                                                <label for="" class="col-sm-3 form-control-label">Container Number</label>
+                                                                <div class="col-sm-9">
+                                                                    <div class="input-group" >
+                                                                        <?php echo $container_number; ?>                                                                            
                                                                     </div>
                                                                 </div>
-                                                            </div>                                                            
+                                                            </div>
                                                             <div class="form-group row">
-                                                                <label for="container_placed_yard" class="col-sm-2 form-control-label">Container Placed Yard At</label>
-                                                                <div class="col-sm-10">
+                                                                <label for="" class="col-sm-3 form-control-label">Container Size</label>
+                                                                <div class="col-sm-9">
                                                                     <div class="input-group">
-                                                                        <?php echo date('d M,Y', strtotime($container_placed_yard));?>                                                                        
+                                                                        <?php 
+                                                                        $container_size = fetchqry('*', TB_CONTAINER_SIZE, array('id='=>$container_size_id), " `name` ASC ");
+                                                                        echo $container_size['name'];
+                                                                        ?>
                                                                     </div>
                                                                 </div>
-                                                            </div>                                                            
+                                                            </div>
                                                             <div class="form-group row">
-                                                                <label for="container_number" class="col-sm-2 form-control-label">Container Number</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $container_number; ?>                                                                        
+                                                                <label for="" class="col-sm-3 form-control-label">Tare Weight</label>
+                                                                <div class="col-sm-9">
+                                                                    <div class="input-group" >
+                                                                        <?php echo $tare_weight;?>                                                                            
                                                                     </div>
                                                                 </div>
-                                                            </div>                                                            
+                                                            </div>
                                                             <div class="form-group row">
-                                                                <label for="container_size_id" class="col-sm-2 form-control-label">Container Size</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="">
+                                                                <label for="" class="col-sm-3 form-control-label">Net Weight</label>
+                                                                <div class="col-sm-9">
+                                                                    <div class="input-group" >
+                                                                        <?php echo $net_weight;?>                                                                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 form-control-label">Net Weight Supplier</label>
+                                                                <div class="col-sm-9">
+                                                                    <div class="input-group" >
+                                                                        <?php echo $net_weight_supplier;?>                                                                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 form-control-label">Pay Load</label>
+                                                                <div class="col-sm-9">
+                                                                    <div class="input-group" >
+                                                                        <?php echo $pay_load;?>                                                                            
+                                                                    </div>
+                                                                </div>                                                                   
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 form-control-label">Empty Depot Name</label>
+                                                                <div class="col-sm-9">
+                                                                    <div class="input-group" >
                                                                         <?php
-                                                                        $qcSize = mysqli_query($con, "SELECT * FROM `".TB_CONTAINER_SIZE."` WHERE id='".$container_size_id."' ");
-                                                                        $size = mysqli_fetch_assoc($qcSize);                                                                       
-                                                                        echo $size['name'];                                                                        
-                                                                        ?>                                                                      
-                                                                    </div>
-                                                                </div>
-                                                            </div>                       
-                                                            <div class="form-group row">
-                                                                <label for="tare_weight" class="col-sm-2 form-control-label">Tare Weight</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $tare_weight; ?>
+                                                                        $ed = fetchqry('*', TB_EMPTY_DEPOT, array('id='=>$empty_depot_name_id), " `name` ASC ");
+                                                                        echo $ed['name'];
+                                                                        ?>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
-                                                                <label for="gross_weight" class="col-sm-2 form-control-label">Gross Weight</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $gross_weight; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label for="net_weight" class="col-sm-2 form-control-label">Net Weight</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $net_weight; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label for="net_weight_supplier" class="col-sm-2 form-control-label">Net Weight Supplier</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $net_weight_supplier; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label for="net_weight_yard" class="col-sm-2 form-control-label">Net Weight Yard</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $net_weight_yard; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label for="pay_load" class="col-sm-2 form-control-label">Pay Load</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $pay_load; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label for="empty_depot_name_id" class="col-sm-2 form-control-label">Empty Depot Name</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $empty_depot_name; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label for="material_code" class="col-sm-2 form-control-label">Material Code</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $material_code; ?>                                                                        
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label for="material_description" class="col-sm-2 form-control-label">Material Description</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $material_description; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">
-                                                                <label for="material_quality_code" class="col-sm-2 form-control-label">Material Quantity Code</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $material_quality_code; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">
-                                                                <label for="shipping_line_id" class="col-sm-2 form-control-label">Shipping Line</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
+                                                                <label for="" class="col-sm-3 form-control-label">Material Code</label>
+                                                                <div class="col-sm-9">
+                                                                    <div class="input-group" >
                                                                         <?php
-                                                                        $shipping_line = fetchqry('*', TB_SHIPPING_LINE, array('id='=>$shipping_line_id)  );
+                                                                        $ed = fetchqry('*', TB_MATERIAL_CODE, array('id='=>$material_code_id), " `material_code` ASC ");
+                                                                        echo $ed['material_code'];
+                                                                        ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 form-control-label">Material Description</label>
+                                                                <div class="col-sm-9">
+                                                                    <div class="input-group" >
+                                                                        <?php echo $material_description;?>                                                                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>                                                        
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 form-control-label">Material Quality Code</label>
+                                                                <div class="col-sm-9">
+                                                                    <div class="input-group" >
+                                                                        <?php echo $material_quality_code;?>                                                                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 form-control-label">Shipping Line</label>
+                                                                <div class="col-sm-4">
+                                                                    <div class="input-group" >
+                                                                        <?php
+                                                                        $shipping_line = fetchqry('*', TB_SHIPPING_LINE, array('id='=>$shipping_line_id) );
                                                                         echo $shipping_line['name'];
                                                                         ?>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            
                                                             <div class="form-group row">
-                                                                <label for="supplier" class="col-sm-2 form-control-label">Supplier</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
+                                                                <label for="supplier_id" class="col-sm-3 form-control-label">Supplier</label>
+                                                                <div class="col-sm-4">
+                                                                    <div class="input-group" >
                                                                         <?php
-                                                                        $supplier = fetchqry('*', TB_SUPPLIER, array('id='=>$shipping_line_id)  );
+                                                                        $supplier = fetchqry('*', TB_SUPPLIER, array('id='=>$supplier_id) );
                                                                         echo $supplier['name'];
-                                                                        ?>                                                                        
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">
-                                                                <label for="seal_number" class="col-sm-2 form-control-label">Seal Number</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php
-                                                                        $seal_number_id = explode(',', $seal_number);                                                                        
-                                                                        foreach($seal_number_id as $sn):
-                                                                            echo $sn;
-                                                                            $seal_number = fetchqry( '*', TB_SEAL_NUMBERS, array('id='=>$sn)  );
-                                                                            echo $seal_number['seal_number'].', ';
-                                                                        endforeach;                                                                        
                                                                         ?>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            
+                                                        
                                                             <div class="form-group row">
-                                                                <label for="yard" class="col-sm-2 form-control-label">Yard</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
+                                                                <label for="" class="col-sm-3 form-control-label">Seal Number</label>
+                                                                <div class="col-sm-4">
+                                                                    <div class="input-group" >
                                                                         <?php
-                                                                        $yard = fetchqry('*', TB_YARDS, array('id='=>$yard_id)  );
-                                                                        echo $yard['name'];
+                                                                        $s_number = fetchqry('*', TB_SEAL_NUMBERS, array('id='=>$seal_number_id) );
+                                                                        echo $s_number['seal_number'];
                                                                         ?>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            
-                                                            
+                                                       
+                                                                <!-- 1  Multiple-image_stock_pile images upload -->
+                                                                <div class="form-group row">
+                                                                    <label for="select_image_stock_pile" class="col-sm-3 form-control-label">Stock Pile Image</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="mydropzone_stock_pile mydropzone">
+                                                                            <?php
+                                                                            $selimages_stock_pile = selectqry( '*', TB_CONTAINER_IMAGES, array("container_id="=>$_REQUEST['id'], "image_status="=>"image_stock_pile") );
+                                                                            if( mysqli_num_rows($selimages_stock_pile) > 0):
+                                                                                $n = 0;
+                                                                                while ($resimages = mysqli_fetch_array($selimages_stock_pile)) {
+                                                                                    if( !isEmpty($resimages['image']) ):
+                                                                                    ?>
+                                                                                        <div class="dz-preview dz-processing dz-image-preview dz-success" id="<?php echo 'img_stock_pile' . $n; ?>">
+                                                                                            <div class="dz-details">                            
+                                                                                                <img data-dz-thumbnail="" src="<?php echo URL_BASE.DIR_UPLOADS.$resimages['image']; ?>" width="40" height="40">
+                                                                                            </div>                          														                            
+                                                                                        </div>
+                                                                                     <?php
+                                                                                    endif;
+                                                                                    $n++;
+                                                                                 }
+                                                                            endif;
+                                                                            ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                          
+                                                                <!-- 2  Multiple: images_empty_container -->
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Empty Container Images</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="mydropzone_empty_container mydropzone">
+                                                                            <?php
+                                                                            $sel_images_empty_container = selectqry( '*', TB_CONTAINER_IMAGES, array("container_id="=>$_REQUEST['id'], "image_status="=>"image_empty_container") );
+                                                                            if( mysqli_num_rows($sel_images_empty_container) > 0):
+                                                                                $n = 0;
+                                                                                while ($resimages = mysqli_fetch_array($sel_images_empty_container)) {
+                                                                                    if( !isEmpty($resimages['image']) ):
+                                                                                    ?>
+                                                                                        <div class="dz-preview dz-processing dz-image-preview dz-success" id="<?php echo 'img' . $n; ?>">
+                                                                                            <div class="dz-details">
+                                                                                                <img data-dz-thumbnail="" src="<?php echo URL_BASE.DIR_UPLOADS.$resimages['image']; ?>" width="40" height="40">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                     <?php
+                                                                                    endif;
+                                                                                    $n++;
+                                                                                 }
+                                                                            endif;
+                                                                            ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                                
+                                                                <!-- 3 Multiple: images_container_loading -->
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Container Loading Image</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="mydropzone_container_loading mydropzone">
+                                                                            <?php
+                                                                            $sel_images_container_loading = selectqry( '*', TB_CONTAINER_IMAGES, array("container_id="=>$_REQUEST['id'], "image_status="=>"image_container_loading") );
+                                                                            if( mysqli_num_rows($sel_images_container_loading) > 0):
+                                                                                $n = 0;
+                                                                                while ($resimages = mysqli_fetch_array($sel_images_container_loading)) {
+                                                                                    if( !isEmpty($resimages['image']) ):
+                                                                                    ?>
+                                                                                        <div class="dz-preview dz-processing dz-image-preview dz-success" id="<?php echo 'img' . $n; ?>">
+                                                                                            <div class="dz-details">
+                                                                                                <img data-dz-thumbnail="" src="<?php echo URL_BASE.DIR_UPLOADS.$resimages['image']; ?>" width="40" height="40">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                     <?php
+                                                                                    endif;
+                                                                                    $n++;
+                                                                                 }
+                                                                            endif;
+                                                                            ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <!-- 4 Multiple: images_container_seal -->
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Container Seal Image</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="mydropzone_container_seal mydropzone">
+                                                                            <?php
+                                                                            $sel_images_container_seal = selectqry( '*', TB_CONTAINER_IMAGES, array("container_id="=>$_REQUEST['id'], "image_status="=>"image_container_seal") );
+                                                                            if( mysqli_num_rows($sel_images_container_seal) > 0):
+                                                                                $n = 0;
+                                                                                while ($resimages = mysqli_fetch_array($sel_images_container_seal)) {
+                                                                                    if( !isEmpty($resimages['image']) ):
+                                                                                    ?>
+                                                                                        <div class="dz-preview dz-processing dz-image-preview dz-success" id="<?php echo 'img' . $n; ?>">
+                                                                                            <div class="dz-details">
+                                                                                                <img data-dz-thumbnail="" src="<?php echo URL_BASE.DIR_UPLOADS.$resimages['image']; ?>" width="40" height="40">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                     <?php
+                                                                                    endif;
+                                                                                    $n++;
+                                                                                 }
+                                                                            endif;
+                                                                            ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <!-- 5 Multiple: images_documents -->
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Container Document Image</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="mydropzone_images_documents mydropzone">
+                                                                            <?php
+                                                                            $sel_images_documents = selectqry( '*', TB_CONTAINER_IMAGES, array("container_id="=>$_REQUEST['id'], "image_status="=>"image_documents") );
+                                                                            if( mysqli_num_rows($sel_images_documents) > 0):
+                                                                                $n = 0;
+                                                                                while ($resimages = mysqli_fetch_array($sel_images_documents)) {
+                                                                                    if( !isEmpty($resimages['image']) ):
+                                                                                    ?>
+                                                                                        <div class="dz-preview dz-processing dz-image-preview dz-success" id="<?php echo 'img' . $n; ?>">
+                                                                                            <div class="dz-details">
+                                                                                                <img data-dz-thumbnail="" src="<?php echo URL_BASE.DIR_UPLOADS.$resimages['image']; ?>" width="40" height="40">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                     <?php
+                                                                                    endif;
+                                                                                    $n++;
+                                                                                 }
+                                                                            endif;
+                                                                            ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Exchange Rate</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group" style="text-transform:capitalize;" >
+                                                                            <?php echo $exchange_rate; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Branch Code</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php
+                                                                            $branch_code = fetchqry('*', TB_BRANCH_CODE, array('id='=>$branch_code_id) );
+                                                                            echo $branch_code['name'];
+                                                                            ?>
+                                                                        </div>
+                                                                    </div>                                                                    
+                                                                </div>                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Shipping Agent</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php
+                                                                            $shipping_agent = fetchqry('*', TB_SHIPPING_AGENT, array('id='=>$shipping_agent_id) );
+                                                                            echo $shipping_agent['name'];
+                                                                            ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Transporter</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group" style="text-transform:capitalize;">
+                                                                            <?php echo $transporter; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Shifted To Storage</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo date( 'd M, Y', strtotime($shipped_to_storage) ); ?>                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="storage" class="col-sm-3 form-control-label">Storage</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo $storage; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Shifted To Terminal</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo date( 'd M, Y', strtotime($shifted_to_terminal) ); ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Terminal</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo $terminal; ?>                        
+                                                                        </div>
+                                                                    </div>                                                                    
+                                                                </div>                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Shifted To Port</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo date( 'd M, Y', strtotime($shifted_to_port) ); ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Port Of Loading</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo $port_of_loading; ?>                        
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Grn Number</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo $grn_number; ?>                        
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">GRN Date</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo date( 'd M, Y', strtotime($grn_date) ); ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Base Port Used For Freight Costing</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group" >
+                                                                            <?php
+                                                                            $tmp = fetchqry( '*', TB_BASE_PORT_USED_FOR_FREIGHT_COSTING, array('id='=>$base_port_used_for_freight_costing) );
+                                                                            echo $tmp['name'];
+                                                                            ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">LS Number</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo $ls_number; ?>                        
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">VO Number</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo $vo_number; ?>                        
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                                                                                
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Status</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php
+                                                                            if($status == 'draft'):
+                                                                                echo 'Draft';
+                                                                            elseif($status == 'pending_upload'):
+                                                                                echo 'Pendign Upload';
+                                                                            elseif($status == 'verified_by_country_manager'):    
+                                                                                echo 'Verified';
+                                                                            elseif($status == 'not_verified_by_country_manager'):        
+                                                                                echo 'Not Verified';
+                                                                            endif;                                                                            
+                                                                            ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Vessel Name</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo $vessel_name; ?>                        
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Voyage</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo $voyage; ?>                        
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">SOB Date</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo $sob_date; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">BLI Date</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo $bli_date; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">Original BL Number</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo $original_bl_number; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">HO Order Number</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo $ho_order_number; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 form-control-label">EX Yard Price</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <?php echo $ex_yard_price; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                            <!-- CNF -->
                                                             <div class="form-group row">
-                                                                <label for="branch_code" class="col-sm-2 form-control-label">Branch Code</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php
-                                                                            $branch_codes = explode(',', $branch_code_id);
-                                                                            
-                                                                            foreach ($branch_codes as $row):
-                                                                                $i = 0;
-                                                                                $row1 = fetchqry('*', TB_BARCODES, array('id='=>$row) );
-                                                                                echo $row1['name'].'<br>';
-                                                                                $i = $i+1;
-                                                                            endforeach;                                                                            
+                                                                <label for="cnf1" class="col-sm-3 form-control-label">CNF</label>
+                                                                <div class="col-sm-2">
+                                                                    <div class="form-control dark" >
+                                                                        <?php 
+                                                                        $tmp = fetchqry('*', TB_CURRENCY, array('id='=>$cnf1) );
+                                                                        echo $tmp['name'].' ('.$tmp['symbol'].')';
+                                                                        ?>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                    <div class="form-control dark" >
+                                                                        <?php 
+                                                                        $tmp = fetchqry('*', TB_CURRENCY, array('id='=>$cnf2) );
+                                                                        echo $tmp['name'].' ('.$tmp['symbol'].')';
+                                                                        ?>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                    <div class="form-control dark" >
+                                                                        <?php 
+                                                                        $tmp = fetchqry('*', TB_CURRENCY, array('id='=>$cnf3) );
+                                                                        echo $tmp['name'].' ('.$tmp['symbol'].')'; 
+                                                                        ?>
+                                                                    </div>
+                                                                </div>                                                              
+                                                            </div>
+                                                                
+                                                            <!-- FOB -->
+                                                            <div class="form-group row">
+                                                                <label for="fob1" class="col-sm-3 form-control-label">FOB</label>
+                                                                <div class="col-sm-2">
+                                                                    <div class="form-control dark" >
+                                                                        <?php 
+                                                                        $tmp = fetchqry('*', TB_CURRENCY, array('id='=>$fob1) );
+                                                                        echo $tmp['name'].' ('.$tmp['symbol'].')';
+                                                                        ?>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                    <div class="form-control dark" >
+                                                                        <?php 
+                                                                        $tmp = fetchqry('*', TB_CURRENCY, array('id='=>$fob2) );
+                                                                        echo $tmp['name'].' ('.$tmp['symbol'].')';
+                                                                        ?>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                    <div class="form-control dark" >
+                                                                        <?php 
+                                                                        $tmp = fetchqry('*', TB_CURRENCY, array('id='=>$fob3) );
+                                                                        echo $tmp['name'].' ('.$tmp['symbol'].')';
                                                                         ?>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            
+                                                                
+                                                            <!-- FCA -->
                                                             <div class="form-group row">
-                                                                <label for="shipping_agent" class="col-sm-2 form-control-label">Shipping Agent</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php
-                                                                        $shipping_agent = fetchqry('*', TB_SHIPPING_AGENT, array('id='=>$shipping_agent_id)  );
-                                                                        echo $shipping_agent['name'];
+                                                                <label for="fca1" class="col-sm-3 form-control-label">FCA</label>
+                                                                <div class="col-sm-2">
+                                                                    <div class="form-control dark" >
+                                                                        <?php 
+                                                                        $tmp = fetchqry('*', TB_CURRENCY, array('id='=>$fca1) );
+                                                                        echo $tmp['name'].' ('.$tmp['symbol'].')'; 
                                                                         ?>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">
-                                                                <label for="transporter" class="col-sm-2 form-control-label">Transpoter</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php
-                                                                        echo $transporter;
+                                                                <div class="col-sm-2">
+                                                                    <div class="form-control dark" >
+                                                                        <?php 
+                                                                        $tmp = fetchqry('*', TB_CURRENCY, array('id='=>$fca2) );
+                                                                        echo $tmp['name'].' ('.$tmp['symbol'].')';
                                                                         ?>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">
-                                                                <label for="shipped_to_storage" class="col-sm-2 form-control-label">Shipping to Storage</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo date('d M, Y', strtotime($shipped_to_storage));?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">
-                                                                <label for="shifted_to_terminal" class="col-sm-2 form-control-label">Shifted To Terminal</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo date('d M, Y', strtotime($shipped_to_storage));?>                                                                        
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">
-                                                                <label for="terminal" class="col-sm-2 form-control-label">Terminal</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $terminal;?>                                                                        
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">
-                                                                <label for="shifted_to_port" class="col-sm-2 form-control-label">Shifted To Port</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo date('d M, Y', strtotime($shifted_to_port));?>                                                                        
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">
-                                                                <label for="port_of_loading" class="col-sm-2 form-control-label">Port Of Loading</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $port_of_loading; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">
-                                                                <label for="grn_number" class="col-sm-2 form-control-label">Grn Number</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $grn_number; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">
-                                                                <label for="grn_date" class="col-sm-2 form-control-label">Grn Date</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo date('d M, Y', strtotime($grn_date));?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">
-                                                                <label for="base_port_used_for_freight_costing" class="col-sm-2 form-control-label">Based Port Used For Freight Costing</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $base_port_used_for_freight_costing; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">
-                                                                <label for="ls_number" class="col-sm-2 form-control-label">Ls Number</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $ls_number; ?>                                                                        
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">
-                                                                <label for="vo_number" class="col-sm-2 form-control-label">Vo Number</label>
-                                                                <div class="col-sm-10">
-                                                                    <div class="input-group">
-                                                                        <?php echo $vo_number; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">                                                            
-                                                                <label class="col-sm-2 form-control-label">Stock Pile</label>
-                                                                <div class="col-sm-10">                                                            	
-                                                                    <div class="input-group">
-                                                                        <a href="<?php echo URL_BASE . DIR_UPLOADS . $image_stock_pile; ?>"  target="_blank" rel="viewimage"><img src="<?php echo URL_BASE . DIR_UPLOADS . $image_stock_pile; ?>" width="100"></a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="form-group row">                                                            
-                                                                <label class="col-sm-2 form-control-label">Empty Container</label>
-                                                                <div class="col-sm-10">                                                            	
-                                                                    <div class="input-group">
-                                                                        <a href="<?php echo URL_BASE . DIR_UPLOADS . $image_empty_container; ?>"  target="_blank" rel="viewimage"><img src="<?php echo URL_BASE . DIR_UPLOADS . $image_empty_container; ?>" width="100"></a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">                                                            
-                                                                <label class="col-sm-2 form-control-label">Container Loading</label>
-                                                                <div class="col-sm-10">                                                            	
-                                                                    <div class="input-group">
-                                                                        <a href="<?php echo URL_BASE . DIR_UPLOADS . $image_container_loading; ?>"  target="_blank" rel="viewimage"><img src="<?php echo URL_BASE . DIR_UPLOADS . $image_container_loading; ?>" width="100"></a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">                                                            
-                                                                <label class="col-sm-2 form-control-label">Container Seal</label>
-                                                                <div class="col-sm-10">                                                            	
-                                                                    <div class="input-group">
-                                                                        <a href="<?php echo URL_BASE . DIR_UPLOADS . $image_container_seal; ?>"  target="_blank" rel="viewimage"><img src="<?php echo URL_BASE . DIR_UPLOADS . $image_container_seal; ?>" width="100"></a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">                                                            
-                                                                <label class="col-sm-2 form-control-label">Documents</label>
-                                                                <div class="col-sm-10">                                                            	
-                                                                    <div class="input-group">
-                                                                        <a href="<?php echo URL_BASE . DIR_UPLOADS . $image_documents; ?>"  target="_blank" rel="viewimage"><img src="<?php echo URL_BASE . DIR_UPLOADS . $image_documents;?>" width="100"></a>
+                                                                <div class="col-sm-2">
+                                                                    <div class="form-control dark" >
+                                                                        <?php 
+                                                                        $tmp = fetchqry('*', TB_CURRENCY, array('id='=>$fca3) );
+                                                                        echo $tmp['name'].' ('.$tmp['symbol'].')';
+                                                                        ?>
                                                                     </div>
                                                                 </div>
                                                             </div>

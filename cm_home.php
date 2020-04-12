@@ -13,13 +13,15 @@ if ($permission['view']) {
         //Unlink image
     }
 
-    $cRes = selectqry('id', $table, array('status!='=>'verified_by_country_manger') );
-    $containerNotVerified = mysqli_num_rows($cRes);
+    $totalContainers = $containersVerified = $containerNotVerified = 0;
     
-    $vcRes = selectqry( 'id', $table, array('status='=>'verified_by_country_manger') );
+    $cRes = selectqry( 'id', $table, array() );
+    $totalContainers = mysqli_num_rows($cRes);
+    
+    $vcRes = selectqry( 'id', $table, array('status='=>'verified_by_country_manager') );
     $containersVerified = mysqli_num_rows($vcRes);
     
-    $totalContainers = ($containersVerified + $containerNotVerified);
+    $containerNotVerified = ( $totalContainers - $containersVerified );
     
     ?>
     <!DOCTYPE html>
