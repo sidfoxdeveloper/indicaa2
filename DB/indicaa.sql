@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 03, 2020 at 12:04 PM
+-- Generation Time: Apr 16, 2020 at 06:30 PM
 -- Server version: 5.5.53-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.20
 
@@ -19,6 +19,28 @@ SET time_zone = "+00:00";
 --
 -- Database: `indicaa`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `base_port_used_for_freight_costing`
+--
+
+CREATE TABLE IF NOT EXISTS `base_port_used_for_freight_costing` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Base Ports' AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `base_port_used_for_freight_costing`
+--
+
+INSERT INTO `base_port_used_for_freight_costing` (`id`, `name`, `created_at`, `modified_at`) VALUES
+(1, 'Base Port - 1', '2020-04-03 00:00:00', '2020-04-03 11:53:55'),
+(2, 'Base Port - 2', '2020-04-03 05:25:09', '2020-04-03 11:56:12');
 
 -- --------------------------------------------------------
 
@@ -105,6 +127,84 @@ CREATE TABLE IF NOT EXISTS `containers` (
   `material_quality_code` varchar(255) NOT NULL COMMENT 'Not mandatory',
   `shipping_line` varchar(255) NOT NULL COMMENT 'Super admin will enter',
   `supplier` varchar(255) NOT NULL COMMENT 'Admin will enter for each country',
+  `seal_number_id` text NOT NULL COMMENT 'multiple comma seprated(,)',
+  `remarks` text NOT NULL,
+  `exchange_rate` enum('master','optional') NOT NULL COMMENT 'Radio button - 1. Master exchange rate   2. OP exchange rate',
+  `transporter` enum('Yes','No') NOT NULL DEFAULT 'Yes' COMMENT 'NAME OF TRANSPORTER(Is it country sepecific - YES)  -  manage by EMO',
+  `shipped_to_storage` datetime NOT NULL COMMENT 'should not be less than the date placed in the yard',
+  `storage` varchar(255) NOT NULL COMMENT 'EMO will enter',
+  `shifted_to_terminal` datetime NOT NULL COMMENT 'should not be less than the date placed in the yard',
+  `terminal` varchar(255) NOT NULL COMMENT 'EMO will enter',
+  `shifted_to_port` datetime NOT NULL COMMENT 'should not be less than the date placed in the terminal',
+  `port_of_loading` varchar(255) NOT NULL COMMENT 'EMO will enter',
+  `grn_number` varchar(255) NOT NULL,
+  `grn_date` datetime NOT NULL COMMENT 'should not be less than the date shifter to port',
+  `base_port_used_for_freight_costing` int(11) NOT NULL COMMENT 'super admin will enter',
+  `ls_number` varchar(255) NOT NULL,
+  `vo_number` varchar(255) NOT NULL,
+  `status_super_admin` enum('1','2') NOT NULL COMMENT 'super admin will enter the values',
+  `status` enum('draft','pending_upload','not_verified_by_country_manager','verified_by_country_manager') NOT NULL DEFAULT 'draft',
+  `vessel_name` varchar(255) NOT NULL,
+  `voyage` varchar(255) NOT NULL,
+  `sob_date` datetime NOT NULL,
+  `bli_date` date NOT NULL,
+  `original_bl_number` text NOT NULL,
+  `ho_order_number` text NOT NULL,
+  `ex_yard_price` text NOT NULL,
+  `cnf1` int(11) NOT NULL COMMENT 'Enter data in 3 currency . Final LR will be in show only in USD',
+  `cnf2` int(11) NOT NULL,
+  `cnf3` int(11) NOT NULL,
+  `fob1` int(11) NOT NULL COMMENT 'Super admin will assign 3 currency for each country',
+  `fob2` int(11) NOT NULL,
+  `fob3` int(11) NOT NULL,
+  `fca1` int(11) NOT NULL,
+  `fca2` int(11) NOT NULL,
+  `fca3` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+
+--
+-- Dumping data for table `containers`
+--
+
+INSERT INTO `containers` (`id`, `user_id`, `country_id`, `company_id`, `yard_id`, `container_size_id`, `empty_depot_name_id`, `shipping_line_id`, `supplier_id`, `branch_code_id`, `shipping_agent_id`, `empty_container_received`, `container_placed_yard`, `container_number`, `tare_weight`, `gross_weight`, `net_weight`, `net_weight_supplier`, `net_weight_yard`, `port_of_destination`, `pay_load`, `material_code_id`, `material_description`, `material_quality_code`, `shipping_line`, `supplier`, `seal_number_id`, `remarks`, `exchange_rate`, `transporter`, `shipped_to_storage`, `storage`, `shifted_to_terminal`, `terminal`, `shifted_to_port`, `port_of_loading`, `grn_number`, `grn_date`, `base_port_used_for_freight_costing`, `ls_number`, `vo_number`, `status_super_admin`, `status`, `vessel_name`, `voyage`, `sob_date`, `bli_date`, `original_bl_number`, `ho_order_number`, `ex_yard_price`, `cnf1`, `cnf2`, `cnf3`, `fob1`, `fob2`, `fob3`, `fca1`, `fca2`, `fca3`, `created_at`, `modified_at`) VALUES
+(4, 6, 2, 4, 2, 1, 2, 1, 2, '2', 2, '2020-10-20 00:00:00', '2020-10-20 00:00:00', 'AAA-555-EEE-SSS', '55T', '600GM', '10010', '1010', '5090', 'rajkot', '66T', '2', 'materail description test test test test test stest', '101010', '', '', 'Select Seal Number', 'this remarks of app', '', 'Yes', '2020-04-07 00:00:00', 'storage - 1', '2020-03-21 00:00:00', 'Terminal tesiting', '2020-03-21 00:00:00', 'Port of loading testing', 'ggggrrrnnnoooo', '2020-03-23 00:00:00', 2, 'llllssnnoo', 'vvooonnoo', '1', 'verified_by_country_manager', 'Test Vessel Name', 'Test Voyage ', '2020-04-06 00:00:00', '2020-04-05', 'xxx-xxx-xxx', 'xxx-xxx-xxx', 'xxx-xxx-xxx', 2, 1, 1, 2, 1, 1, 2, 1, 1, '2020-03-25 19:28:46', '2020-04-16 11:38:12'),
+(14, 8, 2, 3, 2, 1, 2, 3, 2, '5', 2, '2020-04-10 00:00:00', '2020-04-10 00:00:00', 'ABCD-123456-1', '11T', '600GM', '5566', '6565656', '5090', 'rajkot', '55T', '2', 'materail description', '9898989', '', '', '3', 'this remarks of app', '', 'Yes', '2020-03-20 00:00:00', 'storage - 2', '2020-03-21 00:00:00', 'Terminal tesiting', '2020-03-21 00:00:00', 'Port of loading testing', 'ggggrrrnnnoooo', '2020-03-23 00:00:00', 2, 'llllssnnoo', 'vvooonnoo', '1', 'verified_by_country_manager', '88888', '999999', '2020-03-24 00:00:00', '2020-03-25', 'xxx-xxx-xxx', 'xxx-xxx-xxx', 'xxx-xxx-xxx', 2, 2, 1, 2, 2, 1, 2, 2, 1, '2020-04-01 19:28:46', '2020-04-11 06:00:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `container_archieve`
+--
+
+CREATE TABLE IF NOT EXISTS `container_archieve` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `container_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `country_id` int(11) NOT NULL COMMENT 'Auto fill by super admin',
+  `company_id` int(11) NOT NULL COMMENT ' Autofill Super admin ',
+  `yard_id` int(11) NOT NULL COMMENT 'Autofill Super admin',
+  `container_size_id` int(11) NOT NULL,
+  `empty_depot_name_id` int(11) NOT NULL COMMENT 'Admin will enter for each country',
+  `shipping_line_id` int(11) NOT NULL,
+  `supplier_id` int(11) NOT NULL,
+  `branch_code_id` varchar(255) NOT NULL,
+  `shipping_agent_id` int(11) NOT NULL,
+  `empty_container_received` datetime NOT NULL,
+  `container_placed_yard` datetime NOT NULL COMMENT 'SHOULD NOT BE LESS THAN the Empty container received date.',
+  `container_number` varchar(255) NOT NULL COMMENT 'Format - 4 ALPHABETS "-" 6 DIGITS "-" 1 DIGIT',
+  `tare_weight` varchar(255) NOT NULL COMMENT 'textbox - num with 3 decimal place,   -- container weight with out material',
+  `gross_weight` varchar(255) NOT NULL COMMENT 'textbox - num with 3 decimal place',
+  `net_weight` varchar(255) NOT NULL,
+  `net_weight_supplier` varchar(255) NOT NULL,
+  `net_weight_yard` varchar(255) NOT NULL,
+  `port_of_destination` varchar(255) NOT NULL,
+  `pay_load` varchar(255) NOT NULL COMMENT 'textbox - num with 3,   decimal place,   min 21 T and MAX 29,  Show notification to admin and Country manager if is below or above this value',
+  `material_code_id` varchar(255) NOT NULL COMMENT 'Super admin will enter',
+  `material_description` text NOT NULL COMMENT '1000 CHARACTERS',
+  `material_quality_code` varchar(255) NOT NULL COMMENT 'Not mandatory',
   `seal_number` text NOT NULL COMMENT 'multiple comma seprated(,)',
   `remarks` text NOT NULL,
   `exchange_rate` enum('master','optional') NOT NULL COMMENT 'Radio button - 1. Master exchange rate   2. OP exchange rate',
@@ -125,38 +225,30 @@ CREATE TABLE IF NOT EXISTS `containers` (
   `vessel_name` varchar(255) NOT NULL,
   `voyage` varchar(255) NOT NULL,
   `sob_date` datetime NOT NULL,
-  `bli_number` datetime NOT NULL,
+  `bli_number` text NOT NULL,
   `original_bl_number` text NOT NULL,
   `ho_order_number` text NOT NULL,
   `ex_yard_price` text NOT NULL,
-  `cnf` text NOT NULL COMMENT 'Enter data in 3 currency . Final LR will be in show only in USD',
-  `fob` text NOT NULL COMMENT 'Super admin will assign 3 currency for each country',
-  `fca` text NOT NULL,
+  `cnf` varchar(255) NOT NULL COMMENT 'Enter data in 3 currency . Final LR will be in show only in USD',
+  `fob` varchar(255) NOT NULL COMMENT 'Super admin will assign 3 currency for each country',
+  `fca` varchar(255) NOT NULL,
+  `image_stock_pile` varchar(255) NOT NULL,
+  `image_empty_container` varchar(255) NOT NULL,
+  `image_container_loading` varchar(255) NOT NULL,
+  `image_container_seal` varchar(255) NOT NULL,
+  `image_documents` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Dumping data for table `containers`
+-- Dumping data for table `container_archieve`
 --
 
-INSERT INTO `containers` (`id`, `user_id`, `country_id`, `company_id`, `yard_id`, `container_size_id`, `empty_depot_name_id`, `shipping_line_id`, `supplier_id`, `branch_code_id`, `shipping_agent_id`, `empty_container_received`, `container_placed_yard`, `container_number`, `tare_weight`, `gross_weight`, `net_weight`, `net_weight_supplier`, `net_weight_yard`, `port_of_destination`, `pay_load`, `material_code_id`, `material_description`, `material_quality_code`, `shipping_line`, `supplier`, `seal_number`, `remarks`, `exchange_rate`, `transporter`, `shipped_to_storage`, `storage`, `shifted_to_terminal`, `terminal`, `shifted_to_port`, `port_of_loading`, `grn_number`, `grn_date`, `base_port_used_for_freight_costing`, `ls_number`, `vo_number`, `status_super_admin`, `status`, `vessel_name`, `voyage`, `sob_date`, `bli_number`, `original_bl_number`, `ho_order_number`, `ex_yard_price`, `cnf`, `fob`, `fca`, `created_at`, `modified_at`) VALUES
-(4, 6, 2, 4, 2, 1, 1, 1, 2, '2', 1, '2020-10-20 00:00:00', '2020-10-20 00:00:00', 'AAA-555-EEE-SSS', '55T', '600GM', '10010', '1010', '5090', 'rajkot', '66T', '2', 'materail description test test test test test stest', '101010', '', '', '1', 'this remarks of app', 'master', 'Yes', '2020-03-20 00:00:00', 'storage - 1', '2020-03-21 00:00:00', 'Terminal tesiting', '2020-03-21 00:00:00', 'Port of loading testing', 'ggggrrrnnnoooo', '2020-03-23 00:00:00', 5555, 'llllssnnoo', 'vvooonnoo', '1', 'verified_by_country_manager', '', '', '2020-03-24 00:00:00', '2020-03-25 00:00:00', '', '', '', '', '', '', '2020-03-25 19:28:46', '2020-04-02 12:58:59'),
-(14, 6, 1, 3, 1, 1, 1, 1, 1, '3', 1, '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'ABCD-123456-1', '11T', '600GM', '5566', '6565656', '5090', 'rajkot', '55T', 'MTCode', 'materail description', '9898989', '', '', '1', 'this remarks of app', 'master', 'Yes', '2020-03-20 00:00:00', 'storage - 2', '2020-03-21 00:00:00', 'Terminal tesiting', '2020-03-21 00:00:00', 'Port of loading testing', 'ggggrrrnnnoooo', '2020-03-23 00:00:00', 5555, 'llllssnnoo', 'vvooonnoo', '1', 'verified_by_country_manager', '', '', '2020-03-24 00:00:00', '2020-03-25 00:00:00', '', '', '', '', '', '', '2020-03-25 19:28:46', '2020-04-02 12:59:06');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `containers_archive`
---
-
-CREATE TABLE IF NOT EXISTS `containers_archive` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `container_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+INSERT INTO `container_archieve` (`id`, `container_id`, `user_id`, `country_id`, `company_id`, `yard_id`, `container_size_id`, `empty_depot_name_id`, `shipping_line_id`, `supplier_id`, `branch_code_id`, `shipping_agent_id`, `empty_container_received`, `container_placed_yard`, `container_number`, `tare_weight`, `gross_weight`, `net_weight`, `net_weight_supplier`, `net_weight_yard`, `port_of_destination`, `pay_load`, `material_code_id`, `material_description`, `material_quality_code`, `seal_number`, `remarks`, `exchange_rate`, `transporter`, `shipped_to_storage`, `storage`, `shifted_to_terminal`, `terminal`, `shifted_to_port`, `port_of_loading`, `grn_number`, `grn_date`, `base_port_used_for_freight_costing`, `ls_number`, `vo_number`, `status_super_admin`, `status`, `vessel_name`, `voyage`, `sob_date`, `bli_number`, `original_bl_number`, `ho_order_number`, `ex_yard_price`, `cnf`, `fob`, `fca`, `image_stock_pile`, `image_empty_container`, `image_container_loading`, `image_container_seal`, `image_documents`, `created_at`, `modified_at`) VALUES
+(2, 14, 6, 1, 3, 1, 1, 1, 1, 0, '3', 1, '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'ABCD-123456-1', '11T', '600GM', '5566', '6565656', '5090', 'rajkot', '55T', 'MTCode', 'materail description', '9898989', '1', 'this remarks of app', 'master', 'Yes', '2020-03-20 00:00:00', 'storage - 2', '2020-03-21 00:00:00', 'Terminal tesiting', '2020-03-21 00:00:00', 'Port of loading testing', 'ggggrrrnnnoooo', '2020-03-23 00:00:00', 1, 'llllssnnoo', 'vvooonnoo', '1', 'verified_by_country_manager', '', '', '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'xxx-xxx-xxx', 'xxx-xxx-xxx', 'xxx-xxx-xxx', '1', '1', '1', '2020/03/stockpile.png', '2020/03/empty-container.png', '2020/03/loading-container.png', '2020/03/seal.jpg', '2020/03/documents.jpg', '2020-04-04 06:42:06', '2020-04-04 13:12:06'),
+(3, 4, 6, 2, 4, 2, 1, 1, 1, 0, '2', 1, '2020-10-20 00:00:00', '2020-10-20 00:00:00', 'AAA-555-EEE-SSS', '55T', '600GM', '10010', '1010', '5090', 'rajkot', '66T', '2', 'materail description test test test test test stest', '101010', '1', 'this remarks of app', 'master', 'Yes', '2020-03-20 00:00:00', 'storage - 1', '2020-03-21 00:00:00', 'Terminal tesiting', '2020-03-21 00:00:00', 'Port of loading testing', 'ggggrrrnnnoooo', '2020-03-23 00:00:00', 1, 'llllssnnoo', 'vvooonnoo', '1', 'verified_by_country_manager', '', '', '2020-03-24 00:00:00', '2020-03-25 00:00:00', 'xxx-xxx-xxx', 'xxx-xxx-xxx', 'xxx-xxx-xxx', '1', '1', '1', '2020/03/stockpile.png', '2020/03/empty-container.png', '2020/03/loading-container.png', '2020/03/seal.jpg', '2020/03/documents.jpg', '2020-04-04 06:46:56', '2020-04-04 13:16:56');
 
 -- --------------------------------------------------------
 
@@ -167,21 +259,31 @@ CREATE TABLE IF NOT EXISTS `containers_archive` (
 CREATE TABLE IF NOT EXISTS `container_images` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `container_id` int(11) NOT NULL,
-  `image_stock_pile` varchar(255) NOT NULL,
-  `image_empty_container` varchar(255) NOT NULL,
-  `image_container_loading` varchar(255) NOT NULL,
-  `image_container_seal` varchar(255) NOT NULL,
-  `image_documents` varchar(255) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `image_status` enum('image_stock_pile','image_empty_container','image_container_loading','image_container_seal','image_documents') NOT NULL DEFAULT 'image_stock_pile' COMMENT '''image_stock_pile'',''image_empty_container'',''image_container_loading'',''image_container_seal'',''image_documents''',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='images of container' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='images of container' AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `container_images`
 --
 
-INSERT INTO `container_images` (`id`, `container_id`, `image_stock_pile`, `image_empty_container`, `image_container_loading`, `image_container_seal`, `image_documents`) VALUES
-(1, 4, '2020/03/stockpile.png', '2020/03/empty-container.png', '2020/03/loading-container.png', '2020/03/seal.jpg', '2020/03/documents.jpg'),
-(2, 14, '2020/03/stockpile.png', '2020/03/empty-container.png', '2020/03/loading-container.png', '2020/03/seal.jpg', '2020/03/documents.jpg');
+INSERT INTO `container_images` (`id`, `container_id`, `image`, `image_status`) VALUES
+(3, 14, '2020/04/4f87179stockpile_2.png', 'image_stock_pile'),
+(6, 14, '2020/04/3c42c66empty_container.png', 'image_empty_container'),
+(7, 14, '2020/04/48645d8loading_container.png', 'image_container_loading'),
+(8, 14, '2020/04/2e5c26fseal.jpg', 'image_container_seal'),
+(9, 14, '2020/04/458aeccdocuments.jpg', 'image_documents'),
+(10, 14, '2020/04/5368e2bstockpile.png', 'image_stock_pile'),
+(11, 14, '2020/04/1cb446dempty_container.png', 'image_empty_container'),
+(12, 14, '2020/04/18949faloading_container.png', 'image_container_loading'),
+(13, 14, '2020/04/1984b58seal.jpg', 'image_container_seal'),
+(14, 14, '2020/04/46dd3dcdocuments.jpg', 'image_documents'),
+(15, 4, '2020/04/3c4f816stockpile.png', 'image_stock_pile'),
+(16, 4, '2020/04/45879feempty_container.png', 'image_empty_container'),
+(17, 4, '2020/04/10c1624loading_container.png', 'image_container_loading'),
+(18, 4, '2020/04/42a1d58seal.jpg', 'image_container_seal'),
+(19, 4, '2020/04/3503388documents.jpg', 'image_documents');
 
 -- --------------------------------------------------------
 
@@ -218,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `countries` (
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `countries`
@@ -226,7 +328,32 @@ CREATE TABLE IF NOT EXISTS `countries` (
 
 INSERT INTO `countries` (`id`, `name`, `created_at`, `modified_at`) VALUES
 (1, 'Malesiya', '2020-03-20 12:01:04', '2020-03-20 11:03:14'),
-(2, 'India', '2020-03-20 12:04:04', '2020-03-20 11:04:04');
+(2, 'India', '2020-03-20 12:04:04', '2020-03-20 11:04:04'),
+(3, 'America', '2020-04-09 12:18:05', '2020-04-09 06:48:05');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `currency`
+--
+
+CREATE TABLE IF NOT EXISTS `currency` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `country_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `symbol` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='currency' AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `currency`
+--
+
+INSERT INTO `currency` (`id`, `country_id`, `name`, `symbol`, `created_at`, `modified_at`) VALUES
+(1, 3, 'Dollar', '$', '2020-04-09 12:04:46', '2020-04-09 06:48:26'),
+(2, 2, 'Indian Rupee', 'â‚¹', '2020-04-09 12:31:40', '2020-04-09 07:01:40');
 
 -- --------------------------------------------------------
 
@@ -240,14 +367,15 @@ CREATE TABLE IF NOT EXISTS `empty_depot` (
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Empty depot' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Empty depot' AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `empty_depot`
 --
 
 INSERT INTO `empty_depot` (`id`, `name`, `created_at`, `modified_at`) VALUES
-(1, 'Sydney empty depot', '2020-03-27 12:57:26', '2020-03-27 07:27:26');
+(1, 'Empty depot - 1', '2020-03-27 12:57:26', '2020-04-08 04:58:08'),
+(2, 'Empty depot - 2', '2020-03-27 12:57:26', '2020-04-08 04:58:08');
 
 -- --------------------------------------------------------
 
@@ -274,6 +402,29 @@ INSERT INTO `material_code` (`id`, `material_code`, `created_at`, `modified_at`)
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `port_of_loading`
+--
+
+CREATE TABLE IF NOT EXISTS `port_of_loading` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `country_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Port of loading' AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `port_of_loading`
+--
+
+INSERT INTO `port_of_loading` (`id`, `country_id`, `name`, `created_at`, `modified_at`) VALUES
+(1, 2, 'Loding port - 1', '2020-04-11 04:55:21', '2020-04-11 05:55:21'),
+(3, 1, 'Loding port - XXX', '2020-04-14 05:58:47', '2020-04-14 12:37:07');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `seal_numbers`
 --
 
@@ -283,14 +434,141 @@ CREATE TABLE IF NOT EXISTS `seal_numbers` (
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='seal number' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='seal number' AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `seal_numbers`
 --
 
 INSERT INTO `seal_numbers` (`id`, `seal_number`, `created_at`, `modified_at`) VALUES
-(1, '12345679', '2020-03-21 10:39:30', '2020-03-21 10:39:30');
+(1, '12345679', '2020-03-21 10:39:30', '2020-03-21 10:39:30'),
+(2, '2222222222', '2020-03-21 10:39:30', '2020-04-08 05:37:43'),
+(3, '3333333333', '2020-03-21 10:39:30', '2020-03-21 10:39:30');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings_ca`
+--
+
+CREATE TABLE IF NOT EXISTS `settings_ca` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `country_id_port_of_loading` int(11) NOT NULL,
+  `port_of_loading` varchar(255) NOT NULL,
+  `storage_id` int(11) NOT NULL,
+  `terminal_id` int(11) NOT NULL,
+  `shipping_agent_forwarder` enum('yes','no') NOT NULL,
+  `name_of_transporter` enum('yes','no') NOT NULL,
+  `empty_depot_id` int(11) NOT NULL,
+  `yard_id` int(11) NOT NULL,
+  `supplier_id` int(11) NOT NULL,
+  `inco_terms` varchar(255) NOT NULL,
+  `country_manager` varchar(255) NOT NULL,
+  `inspector_id` int(11) NOT NULL,
+  `bookings` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Settings' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `settings_ca`
+--
+
+INSERT INTO `settings_ca` (`id`, `country_id_port_of_loading`, `port_of_loading`, `storage_id`, `terminal_id`, `shipping_agent_forwarder`, `name_of_transporter`, `empty_depot_id`, `yard_id`, `supplier_id`, `inco_terms`, `country_manager`, `inspector_id`, `bookings`, `created_at`, `modified_at`) VALUES
+(1, 3, 'Port of loading', 2, 2, 'no', 'no', 2, 2, 2, 'Inco Terms', 'Countrt Manager', 6, '2020-04-14 00:00:00', '0000-00-00 00:00:00', '2020-04-15 06:31:30');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings_cm`
+--
+
+CREATE TABLE IF NOT EXISTS `settings_cm` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `country_id_port_of_loading` int(11) NOT NULL,
+  `port_of_loading` varchar(255) NOT NULL,
+  `storage_id` int(11) NOT NULL,
+  `terminal_id` int(11) NOT NULL,
+  `shipping_agent_forwarder` enum('yes','no') NOT NULL DEFAULT 'no',
+  `name_of_transporter` enum('yes','no') NOT NULL DEFAULT 'no',
+  `empty_depot_id` int(11) NOT NULL,
+  `yard_id` int(11) NOT NULL,
+  `supplier_id` int(11) NOT NULL,
+  `inco_terms` varchar(255) NOT NULL,
+  `country_manager` varchar(255) NOT NULL,
+  `inspector_id` int(11) NOT NULL,
+  `bookings` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings_emo`
+--
+
+CREATE TABLE IF NOT EXISTS `settings_emo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `country_id_port_of_loading` int(11) NOT NULL,
+  `port_of_loading` varchar(255) NOT NULL,
+  `storage_id` int(11) NOT NULL,
+  `terminal_id` int(11) NOT NULL,
+  `shipping_agent_forwarder` enum('yes','no') NOT NULL DEFAULT 'no',
+  `name_of_transporter` enum('yes','no') NOT NULL DEFAULT 'no',
+  `empty_depot_id` int(11) NOT NULL,
+  `yard_id` int(11) NOT NULL,
+  `supplier_id` int(11) NOT NULL,
+  `inco_terms` varchar(255) NOT NULL,
+  `country_manager` varchar(255) NOT NULL,
+  `inspector_id` int(11) NOT NULL,
+  `bookings` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='emo settings' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `settings_emo`
+--
+
+INSERT INTO `settings_emo` (`id`, `country_id_port_of_loading`, `port_of_loading`, `storage_id`, `terminal_id`, `shipping_agent_forwarder`, `name_of_transporter`, `empty_depot_id`, `yard_id`, `supplier_id`, `inco_terms`, `country_manager`, `inspector_id`, `bookings`, `created_at`, `modified_at`) VALUES
+(1, 2, 'Port of loading', 1, 2, 'yes', 'no', 1, 1, 2, 'Inco Terms', 'Name of Countrt Manager', 6, '2020-04-06 00:00:00', '2020-04-15 00:00:00', '2020-04-14 10:24:04');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings_sa`
+--
+
+CREATE TABLE IF NOT EXISTS `settings_sa` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `country_id_port_of_loading` int(11) NOT NULL,
+  `port_of_loading` varchar(255) NOT NULL,
+  `storage_id` int(11) NOT NULL,
+  `terminal_id` int(11) NOT NULL,
+  `shipping_agent_forwarder` enum('yes','no') NOT NULL,
+  `name_of_transporter` enum('yes','no') NOT NULL,
+  `empty_depot_id` int(11) NOT NULL,
+  `yard_id` int(11) NOT NULL,
+  `supplier_id` int(11) NOT NULL,
+  `inco_terms` varchar(255) NOT NULL,
+  `country_manager` varchar(255) NOT NULL,
+  `inspector_id` int(11) NOT NULL,
+  `bookings` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `settings_sa`
+--
+
+INSERT INTO `settings_sa` (`id`, `country_id_port_of_loading`, `port_of_loading`, `storage_id`, `terminal_id`, `shipping_agent_forwarder`, `name_of_transporter`, `empty_depot_id`, `yard_id`, `supplier_id`, `inco_terms`, `country_manager`, `inspector_id`, `bookings`, `created_at`, `modified_at`) VALUES
+(1, 1, 'Port of loading', 1, 2, 'no', 'yes', 1, 2, 1, 'Inco Terms', 'Countrt Manager', 6, '2020-04-13 00:00:00', '0000-00-00 00:00:00', '2020-04-16 12:47:25');
 
 -- --------------------------------------------------------
 
@@ -341,6 +619,28 @@ INSERT INTO `shipping_line` (`id`, `name`, `created_at`, `modified_at`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `storages`
+--
+
+CREATE TABLE IF NOT EXISTS `storages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='name of storages' AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `storages`
+--
+
+INSERT INTO `storages` (`id`, `name`, `created_at`, `modified_at`) VALUES
+(1, 'Storage - 1', '2020-04-11 06:26:59', '2020-04-11 07:26:59'),
+(2, 'Storage - 2', '2020-04-11 06:27:17', '2020-04-11 07:27:17');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `supplier`
 --
 
@@ -360,6 +660,28 @@ CREATE TABLE IF NOT EXISTS `supplier` (
 INSERT INTO `supplier` (`id`, `country_id`, `name`, `created_at`, `modified_at`) VALUES
 (1, 2, 'Supplier-1', '2020-03-27 06:06:17', '2020-03-27 13:00:50'),
 (2, 2, 'Supplier-2', '2020-03-27 06:09:00', '2020-03-27 13:01:35');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `terminals`
+--
+
+CREATE TABLE IF NOT EXISTS `terminals` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `terminals`
+--
+
+INSERT INTO `terminals` (`id`, `name`, `created_at`, `modified_at`) VALUES
+(1, 'Terminal - 1', '2020-04-11 06:35:13', '2020-04-12 18:25:43'),
+(2, 'Terminal - 2', '2020-04-11 06:35:13', '2020-04-12 18:25:43');
 
 -- --------------------------------------------------------
 
@@ -397,13 +719,13 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `users_groups_id`, `country_id`, `company_id`, `yard_id`, `user_name`, `first_name`, `last_name`, `email`, `password`, `phone`, `location`, `image`, `status`, `app_access_days`, `rootwaystrash`, `rootwaysstatus`, `token`, `lastlogin`, `created_at`, `modified_at`) VALUES
-(1, 1, 0, 0, 0, 'superadmin', 'Indicaa Group', 'Admin', 'superadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', 'Sydney, Australia', '', 'permanent', 0, 0, 0, '', '2020-04-02 14:44:45', '2020-03-18 00:00:00', '2020-04-02 09:14:45'),
-(2, 2, 0, 0, 0, 'manager', 'Indicaa Group ', 'Manager', 'mamager@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-02 14:42:42', '2020-03-18 00:00:00', '2020-04-02 09:12:42'),
-(3, 3, 0, 0, 0, 'countryadmin', 'Indicaa Group ', 'Country Admin', 'countryadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-02 14:36:42', '2020-03-18 00:00:00', '2020-04-02 09:06:42'),
-(4, 4, 0, 0, 0, 'emoadmin', 'Indicaa Group ', 'EMO Admin', 'emoadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-02 14:33:12', '2020-03-18 00:00:00', '2020-04-02 09:03:12'),
-(5, 5, 0, 0, 0, 'countrymanager', 'Indicaa Group ', 'Country Manager', 'countrymanager@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-03 11:14:40', '2020-03-18 00:00:00', '2020-04-03 05:44:40'),
+(1, 1, 1, 3, 1, 'superadmin', 'Indicaa Group', 'Admin', 'superadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', 'Sydney, Australia', '', 'permanent', 0, 0, 0, '', '2020-04-16 18:11:30', '2020-03-18 00:00:00', '2020-04-16 12:41:30'),
+(2, 2, 1, 3, 1, 'manager', 'Indicaa Group ', 'Manager', 'mamager@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-16 11:22:24', '2020-03-18 00:00:00', '2020-04-16 05:52:24'),
+(3, 3, 1, 3, 1, 'countryadmin', 'Indicaa Group ', 'Country Admin', 'countryadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-16 10:36:32', '2020-03-18 00:00:00', '2020-04-16 05:06:32'),
+(4, 4, 1, 3, 1, 'emoadmin', 'Indicaa Group ', 'EMO Admin', 'emoadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-16 17:19:04', '2020-03-18 00:00:00', '2020-04-16 11:49:04'),
+(5, 5, 1, 3, 1, 'countrymanager', 'Indicaa Group ', 'Country Manager', 'countrymanager@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-16 13:02:21', '2020-03-18 00:00:00', '2020-04-16 07:32:21'),
 (6, 6, 1, 3, 1, 'inspector', 'Indicaa Group ', 'Inspector', 'inspector@gmail.com', '=UlVKdFVYZ1cidkSyRVbwZVZHhDeUZlUTJmRSFVVsRmTZdlUHZVb0gnVGFUP', '1234567890', 'Sydney, Australia', 'test.jpg', 'permanent', 0, 0, 0, '07ad28d62d80d8ac8bd65814a3fcb17a', '2020-03-21 06:23:42', '2020-03-18 00:00:00', '2020-03-25 06:58:42'),
-(8, 6, 0, 0, 0, 'test', 'nisha', 'Testing', 'test@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', 'tst loc', '', 'limit_of_days', 600, 0, 0, 'dfbbd97a8036ea9a7e96d03b0f8d785b', '0000-00-00 00:00:00', '2020-03-20 08:15:02', '2020-03-24 11:42:13');
+(8, 6, 1, 3, 1, 'test', 'nisha', 'Testing', 'test@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', 'tst loc', '', 'limit_of_days', 600, 0, 0, 'dfbbd97a8036ea9a7e96d03b0f8d785b', '0000-00-00 00:00:00', '2020-03-20 08:15:02', '2020-04-10 06:17:09');
 
 -- --------------------------------------------------------
 
@@ -451,12 +773,9 @@ CREATE TABLE IF NOT EXISTS `users_logins` (
 
 INSERT INTO `users_logins` (`tempid`, `rootwaysusername`, `rootwayssessionid`, `groupuserid`, `actiontime`) VALUES
 ('==QVWp0VUhlVTJFbahkTWZlWjtmS2olRWdlYGZFUNRlQX5kVWZkVsx2Qi1mUvRmRk5UTFZ1VWtWODZFbwZ0UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '=AFVxI0VrZFMWJjVZF2R4dVZsx2cUV1Y1YVMSZ1YGZlWVxmSzZFbsNnUsRGVU1GeXVGSOhVVB1TP', '==QVWp0VUhFcSJFbaRkTWZVYjxmWVRFbOdlYGZFUNRlQX5kVWZkVsx2Qi1mUvRmRk5UTFZ1VWtWODZFbwZ0UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '', '2020-03-18 13:46:16'),
-('==QVWp0VUZlTTJ2RGB1YHFjVS1GexRVbGdUYsZFUNRlQT5kVWZkVuZUYhJjUzRmRk9UTFZ1cWtGOxYlVwh3UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUZlTTJ2RWBlTXR3VSxmSVRlVSFmYGZFUNRlQT5kVWZkVuZUYhJjUzRmRk9UTFZ1cWtGOxYlVwh3UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-02 14:44:45'),
-('==QVWp0VUZlTTJ2RKNzYHRnVSxmWVRVbodUYsZVUNRlQX5kVsVkVsZ1ShJjUUZFbWBVTFVFeW5WT1YlVwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUVlTTJFbaR0Vth3VS1GaxplVwdUYsZVUNRlQX5kVsVkVsZ1ShJjUUZFbWBVTFVFeW5WT1YlVwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-02 14:44:45'),
-('==QVWp0VUhFcSJ2RGx0UshmWjxmWxRFbSdlYGZlUNRlQX5kVsVkVsx2Qi1mUvRmRk9UTFVFeW5WT1YlVwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUhFcSJFbkNzVth3VSxmWVRFbOdlYGZlUNRlQX5kVsVkVsx2Qi1mUvRmRk9UTFVFeW5WT1YlVwZ1UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-02 14:44:45'),
-('==QVWp0VUhlVTJ2RGR1UtRnVSxmSFRlVS9mUt5UUNRlQX5kVWZkVuBnQi1mUUZFbWBVTFZ1VWtGOxYlVwh3UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUZlTTJ2RKJ3UtRnVS1GaxplVo9mUt5UUNRlQX5kVWZkVuBnQi1mUUZFbWBVTFZ1VWtGOxYlVwh3UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-02 14:44:45'),
-('==QVWp0VUVlTTJFbaB1YHh3VS1GaFplVwNUYsZFUNRlQT5kVWZkVuZ1bidlUYZFbW5UTFZ1RWNTTxIlVvJzUrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '=AlVGhUVup0cNFjWadlaG5kVwAXcV5WW4JlVaxkUsRmVWtmSZZVMnhnVwUTSTpmSXNleshlVGR2USJjSzdVb4RVTXh3cZVlWXZlRSpHZGRWU', '==QVWp0VUZlTTJFbkJ3YGplWjxmSFRlVSdlYGZFUNRlQT5kVWZkVuZ1bidlUYZFbW5UTFZ1RWNTTxIlVvJzUrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaVXTWJVU', '2020-04-03 11:29:40'),
-('==QVWp0VUhFcSJFbkp3YGRmWjtmSFRlVWFmYGZVUNRlQT5kVWZkVuZ0ShJjUUZFbW9UTFVFeW5WTxIlVvJzUrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUhFcSJ2RKNzYHh3VStmSVRlVkFmYGZVUNRlQT5kVWZkVuZ0ShJjUUZFbW9UTFVFeW5WTxIlVvJzUrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-02 14:44:45');
+('==QVWp0VUVlTTJFbah1YHFzVStmSFplVkFmYGZFUWpmSX5UVWlkVsx2UidlUzRmRk5UTFVFeW5WT1YlVwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '=AlVGhUVup0cNFjWadlaG5kVwAXcV5WW4JlVaxkUsRmVWtmSZZVMnhnVwUTSTpmSXNleshlVGR2USJjSzdVb4RVTXh3cZVlWXZlRSpHZGRWU', '==QVWp0VUZlTTJ2RKJ3YHRnVS1GexRFboFmYGZFUWpmSX5UVWlkVsx2UidlUzRmRk5UTFVFeW5WT1YlVwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaVXTWJVU', '2020-04-16 13:24:52'),
+('==QVWp0VUVlTTJ2RWR0YGpVYjxmWFRFbWdlYGZFUWxGZp5kVWdkVsx2bidlUUZFbWBVTFVFeW5WT1YlVwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUZlTTJ2RWR1YHhnVStmWVRFbadlYGZFUWxGZp5kVWdkVsx2bidlUUZFbWBVTFVFeW5WT1YlVwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-16 18:29:22'),
+('==QVWp0VUVlTTJ2RWR0YHFzVStmSFRlVkdlYGZVUV1WMO5kVWdkVuBnbidlUzRmRk9UTFVFeW5WT1YlVwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', 'QZlRIVlbKNXTxolWXpmROZFMwFXVulFeSZlWMJFbkZlVWB3RWFDcvJmRWV1VsplTjBDcVZlRkNlVxsWP', '==QVWp0VUVlTTJ2RGBlTXFzVStmSVplVWdlYGZVUV1WMO5kVWdkVuBnbidlUzRmRk9UTFVFeW5WT1YlVwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJlVaVXTWJVU', '2020-04-16 17:19:08');
 
 -- --------------------------------------------------------
 
@@ -606,7 +925,96 @@ INSERT INTO `users_login_histories` (`users_id`, `ondatetime`, `ip`, `browser`, 
 (5, '2020-04-02 15:43:32', '127.0.0.1', 'Mozilla Firefox', 1),
 (5, '2020-04-02 17:23:00', '127.0.0.1', 'Mozilla Firefox', 1),
 (5, '2020-04-03 09:50:50', '127.0.0.1', 'Mozilla Firefox', 1),
-(5, '2020-04-03 11:14:40', '127.0.0.1', 'Mozilla Firefox', 1);
+(5, '2020-04-03 11:14:40', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-03 12:25:39', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-03 12:55:08', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-03 14:38:30', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-03 15:29:54', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-03 15:54:00', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-03 17:09:04', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-03 17:18:26', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-03 17:29:18', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-03 18:09:22', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-03 18:16:17', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-04 10:07:08', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-04 10:48:43', '::1', 'Google Chrome', 0),
+(1, '2020-04-04 10:52:21', '::1', 'Google Chrome', 1),
+(3, '2020-04-04 11:22:55', '::1', 'Google Chrome', 1),
+(5, '2020-04-04 11:23:22', '::1', 'Google Chrome', 1),
+(1, '2020-04-04 14:09:06', '::1', 'Google Chrome', 1),
+(5, '2020-04-04 14:10:12', '::1', 'Google Chrome', 1),
+(5, '2020-04-04 14:38:47', '::1', 'Google Chrome', 1),
+(5, '2020-04-04 14:46:23', '::1', 'Google Chrome', 1),
+(5, '2020-04-04 17:49:33', '::1', 'Google Chrome', 1),
+(1, '2020-04-06 12:34:17', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-06 12:46:42', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-06 14:36:09', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-06 15:58:04', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-06 15:58:22', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-06 18:26:30', '::1', 'Google Chrome', 1),
+(5, '2020-04-07 09:01:13', '::1', 'Google Chrome', 1),
+(5, '2020-04-07 09:43:46', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-07 10:15:34', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-07 11:57:38', '::1', 'Google Chrome', 1),
+(5, '2020-04-07 15:03:10', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-07 18:33:48', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-08 09:32:57', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-08 15:11:02', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-08 15:32:13', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-08 18:20:39', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-09 09:33:43', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-09 11:50:07', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-09 12:32:44', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-09 15:29:25', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-09 17:12:30', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-10 08:48:46', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-10 09:44:34', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-10 11:27:48', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-10 11:48:00', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-10 11:52:50', '127.0.0.1', 'Mozilla Firefox', 0),
+(4, '2020-04-10 11:53:24', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-10 16:38:10', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-10 16:39:05', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-10 17:08:19', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-10 18:03:21', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-11 10:27:34', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-11 11:17:16', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-11 15:27:09', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-11 17:53:07', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-12 21:13:20', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-12 22:06:32', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-12 23:54:40', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-13 01:30:22', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-14 15:31:05', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-14 16:27:39', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-14 16:29:28', '::1', 'Google Chrome', 1),
+(1, '2020-04-14 16:34:29', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-14 16:51:59', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-14 16:59:45', '::1', 'Google Chrome', 1),
+(1, '2020-04-14 17:21:08', '127.0.0.1', 'Mozilla Firefox', 1),
+(3, '2020-04-15 09:46:49', '127.0.0.1', 'Mozilla Firefox', 1),
+(3, '2020-04-15 10:22:18', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-15 10:48:29', '127.0.0.1', 'Mozilla Firefox', 1),
+(3, '2020-04-15 10:49:58', '::1', 'Google Chrome', 1),
+(3, '2020-04-15 11:24:29', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-15 11:27:59', '::1', 'Google Chrome', 1),
+(2, '2020-04-15 12:07:42', '127.0.0.1', 'Mozilla Firefox', 1),
+(3, '2020-04-15 17:21:27', '127.0.0.1', 'Mozilla Firefox', 1),
+(2, '2020-04-15 17:40:49', '127.0.0.1', 'Mozilla Firefox', 1),
+(3, '2020-04-16 10:33:10', '127.0.0.1', 'Mozilla Firefox', 1),
+(3, '2020-04-16 10:36:32', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-16 10:39:08', '127.0.0.1', 'Mozilla Firefox', 1),
+(5, '2020-04-16 10:45:54', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-16 10:51:09', '127.0.0.1', 'Mozilla Firefox', 1),
+(2, '2020-04-16 10:52:47', '127.0.0.1', 'Mozilla Firefox', 1),
+(2, '2020-04-16 11:22:24', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-16 11:50:09', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-16 12:25:06', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-16 12:48:55', '::1', 'Google Chrome', 1),
+(5, '2020-04-16 13:02:21', '::1', 'Google Chrome', 1),
+(1, '2020-04-16 17:00:16', '127.0.0.1', 'Mozilla Firefox', 1),
+(4, '2020-04-16 17:19:04', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-16 18:11:30', '127.0.0.1', 'Mozilla Firefox', 1);
 
 -- --------------------------------------------------------
 
@@ -623,7 +1031,7 @@ CREATE TABLE IF NOT EXISTS `users_permission` (
   `edit` tinyint(1) NOT NULL DEFAULT '0',
   `del` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=99 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=111 ;
 
 --
 -- Dumping data for table `users_permission`
@@ -650,7 +1058,19 @@ INSERT INTO `users_permission` (`id`, `users_groups_id`, `filename`, `view`, `ad
 (95, 5, 'cm_containers', 1, 1, 1, 1),
 (96, 5, 'cm_container', 1, 1, 1, 1),
 (97, 1, 'sa_branch', 1, 1, 1, 1),
-(98, 4, 'emo_shipping_agent', 1, 1, 1, 1);
+(98, 4, 'emo_shipping_agent', 1, 1, 1, 1),
+(99, 1, 'sa_base_port', 1, 1, 1, 1),
+(100, 1, 'sa_currency', 1, 1, 1, 1),
+(101, 5, 'cm_settings', 1, 1, 1, 1),
+(102, 4, 'emo_container', 1, 1, 1, 1),
+(103, 4, 'emo_settings', 1, 1, 1, 1),
+(104, 1, 'sa_port_of_loading', 1, 1, 1, 1),
+(105, 1, 'sa_storage', 1, 1, 1, 1),
+(106, 1, 'sa_terminal', 1, 1, 1, 1),
+(107, 3, 'ca_container', 1, 1, 1, 1),
+(108, 3, 'ca_settings', 1, 1, 1, 1),
+(109, 1, 'sa_container', 1, 1, 1, 1),
+(110, 1, 'sa_settings', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 

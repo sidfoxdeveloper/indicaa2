@@ -13,6 +13,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo URL_BASEADMIN; ?>assets/styles/dashboard/tabbed-sidebar.min.css">
     </head>
     <body class="ks-navbar-fixed ks-sidebar-default ks-sidebar-position-fixed ks-page-header-fixed ks-theme-primary ks-page-loading"> 
+        
         <!-- remove ks-page-header-fixed to unfix header -->
         <?php include('includes/header.php'); ?>
         <div class="ks-page-container ks-dashboard-tabbed-sidebar-fixed-tabs">
@@ -21,7 +22,7 @@
                 <div class="ks-page-header">
                     <section class="ks-title-and-subtitle">
                         <div class="ks-title-block">
-                            <h3 class="ks-main-title">Manager Dashboard</h3>
+                            <h3 class="ks-main-title"> Country Admin Dashboard </h3>
                         </div>
                     </section>
                 </div>

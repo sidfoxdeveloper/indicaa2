@@ -9,14 +9,16 @@ define('ACCOUNT_SETTIINGS', 'account_settings.php');
 define('FORGOT_PASSWORD', 'forgot_password.php');
 define('SETTINGS', 'settings.php');
 
-/**  Country Manager  **/
-define('CM_HOME', 'cm_home.php');
-define('CM_CONTAINERS_LIST', 'cm_containers_list.php');
-define('CM_CONTAINER_EDIT', 'cm_container_edit.php');
-define('CM_CONTAINER_VIEW', 'cm_container_view.php');
-define('CM_SETTINGS_EDIT', 'cm_settings_edit.php');
+/**  Manager  **/
+define('MA_HOME', 'ma_home.php');
 
-/**  Country Manager  **/
+/**  Super Admin  **/
+define('SA_CONTAINER_LIST', 'sa_container_list.php');
+define('SA_CONTAINER_EDIT', 'sa_container_edit.php');
+define('SA_CONTAINER_VIEW', 'sa_container_view.php');
+
+define('SA_SETTINGS_EDIT', 'sa_settings_edit.php');
+
 define('SA_USER_LIST', 'sa_user_list.php');
 define('SA_USER_EDIT', 'sa_user_edit.php');
 
@@ -53,6 +55,15 @@ define('SA_BASE_PORT_EDIT', 'sa_base_port_edit.php');
 define('SA_CURRENCY_LIST', 'sa_currency_list.php');
 define('SA_CURRENCY_EDIT', 'sa_currency_edit.php');
 
+define('SA_PORT_OF_LOADING_LIST', 'sa_port_of_loading_list.php');
+define('SA_PORT_OF_LOADING_EDIT', 'sa_port_of_loading_edit.php');
+
+define('SA_STORAGE_LIST', 'sa_storage_list.php');
+define('SA_STORAGE_EDIT', 'sa_storage_edit.php');
+
+define('SA_TERMINAL_LIST', 'sa_terminal_list.php');
+define('SA_TERMINAL_EDIT', 'sa_terminal_edit.php');
+
 /**  Country Admin (EMO)  **/
 define('EMO_HOME', 'emo_home.php');
 define('EMO_EMPTY_DEPOT_LIST', 'emo_empty_depot_list.php');
@@ -60,15 +71,6 @@ define('EMO_EMPTY_DEPOT_EDIT', 'emo_empty_depot_edit.php');
 
 define('EMO_SUPPLIER_LIST', 'emo_supplier_list.php');
 define('EMO_SUPPLIER_EDIT', 'emo_supplier_edit.php');
-
-define('EMO_PORT_OF_LOADING_LIST', 'emo_port_of_loading_list.php');
-define('EMO_PORT_OF_LOADING_EDIT', 'emo_port_of_loading_edit.php');
-
-define('EMO_STORAGE_LIST', 'emo_storage_list.php');
-define('EMO_STORAGE_EDIT', 'emo_storage_edit.php');
-
-define('EMO_TERMINAL_LIST', 'emo_terminal_list.php');
-define('EMO_TERMINAL_EDIT', 'emo_terminal_edit.php');
 
 define('EMO_SHIPPING_AGENT_EDIT', 'emo_shipping_agent_edit.php');
 define('EMO_SHIPPING_AGENT_LIST', 'emo_shipping_agent_list.php');
@@ -78,6 +80,19 @@ define('EMO_CONTAINER_EDIT', 'emo_container_edit.php');
 define('EMO_CONTAINER_VIEW', 'emo_container_view.php');
 define('EMO_SETTINGS_EDIT', 'emo_settings_edit.php');
 
+/**  Country Manager  **/
+define('CM_HOME', 'cm_home.php');
+define('CM_CONTAINERS_LIST', 'cm_containers_list.php');
+define('CM_CONTAINER_EDIT', 'cm_container_edit.php');
+define('CM_CONTAINER_VIEW', 'cm_container_view.php');
+define('CM_SETTINGS_EDIT', 'cm_settings_edit.php');
+
+/**  Country Adminss  **/
+define('CA_HOME', 'ca_home.php');
+define('CA_CONTAINER_LIST', 'ca_container_list.php');
+define('CA_CONTAINER_EDIT', 'ca_container_edit.php');
+define('CA_CONTAINER_VIEW', 'ca_container_view.php');
+define('CA_SETTINGS_EDIT', 'ca_settings_edit.php');
 
 /** Included Files **/
 define('INC_PAGINATION', 'pagination.php');

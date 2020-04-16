@@ -4,9 +4,42 @@
 <div class="ks-column ks-sidebar ks-info">
     <div class="ks-wrapper ks-sidebar-wrapper">
         <ul class="nav nav-pills nav-stacked">
+        <?php    
+        /**
+         * Manager 
+        **/
+        if( decode($_SESSION['groupuserid']) == 2 ): ?>
+                
+            <li class="nav-item">
+               <a class="nav-link" href="<?php echo MA_HOME; ?>">
+                   <span class="ks-icon la la-dashboard"></span>
+                   <span>Manager Dashboard</span>
+               </a>
+            </li>
             
-            <?php if( decode($_SESSION['groupuserid']) == 1 ): ?>
+        <?php 
+        endif;
+        /**
+         * Super Admin 
+        **/
+        if( decode($_SESSION['groupuserid']) == 1 ): 
+        ?>
             
+                <li class="nav-item dropdown <?php if($CP == SA_CONTAINER_LIST || $CP == SA_CONTAINER_EDIT){ echo 'open'; }?>">
+                    <a class="nav-link dropdown-toggle" href="#">
+                        <span class="ks-icon la la-square-o"></span>
+                        <span>Container</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_CONTAINER_LIST;?>">Containers</a>                        
+                    </div>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link " href="<?php echo URL_BASEADMIN.SA_SETTINGS_EDIT.'?true&id=1&page=1'; ?>">
+                        <span class="ks-icon la la-cog"></span>
+                        <span>Settings</span>
+                    </a>                    
+                </li>
                 <li class="nav-item dropdown <?php if($CP == SA_USER_LIST || $CP == SA_USER_EDIT){ echo 'open'; } ?>">
                     <a class="nav-link dropdown-toggle" href="#">
                         <span class="ks-icon la la-user"></span>
@@ -97,7 +130,6 @@
                         <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_BRANCH_EDIT;?>">Add Branch Code</a>
                     </div>
                 </li>
-                
                 <li class="nav-item dropdown <?php if( $CP == SA_BASE_PORT_LIST || $CP == SA_BASE_PORT_EDIT ){ echo 'open'; }?>" >
                     <a class="nav-link dropdown-toggle" href="#">
                         <span class="ks-icon la la-ship"></span>
@@ -109,9 +141,69 @@
                     </div>
                 </li>
                 
-        <?php 
-            endif;
-            if( decode($_SESSION['groupuserid']) == 4 ): ?>
+                <li class="nav-item dropdown <?php if( $CP == SA_PORT_OF_LOADING_LIST|| $CP == SA_PORT_OF_LOADING_EDIT ){ echo 'open'; } ?>">
+                    <a class="nav-link dropdown-toggle" href="#">
+                        <span class="ks-icon la la-ship"></span>
+                        <span>Port of Loading</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_PORT_OF_LOADING_LIST;?>">Ports of Loading</a>
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_PORT_OF_LOADING_EDIT;?>">Add Loading Port</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown <?php if( $CP == SA_STORAGE_LIST || $CP == SA_STORAGE_EDIT ){ echo 'open'; } ?>">
+                    <a class="nav-link dropdown-toggle" href="#">
+                        <span class="ks-icon la la-ship"></span>
+                        <span>Storages</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_STORAGE_LIST;?>">Storages</a>
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_STORAGE_EDIT;?>">Add Storage</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown <?php if( $CP == SA_TERMINAL_LIST || $CP == SA_TERMINAL_EDIT ){ echo 'open'; } ?>">
+                    <a class="nav-link dropdown-toggle" href="#">
+                        <span class="ks-icon la la-ship"></span>
+                        <span>Terminals</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_TERMINAL_LIST;?>">Terminals</a>
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.SA_TERMINAL_EDIT;?>">Add Terminal</a>
+                    </div>
+                </li>
+                
+         <?php
+        endif;
+        /**
+         * Country Admin
+        **/
+        if( decode($_SESSION['groupuserid']) == 3 ): ?>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo CA_HOME; ?>">
+                        <span class="ks-icon la la-dashboard"></span>
+                        <span>Country Admin Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link " href="<?php echo URL_BASEADMIN.CA_CONTAINER_LIST; ?>">
+                        <span class="ks-icon la la-ship"></span>
+                        <span>Containers</span>
+                    </a>                    
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link " href="<?php echo URL_BASEADMIN.CA_SETTINGS_EDIT.'?true&id=1&page=1'; ?>">
+                        <span class="ks-icon la la-cog"></span>
+                        <span>Settings</span>
+                    </a>                    
+                </li>
+                
+        <?php
+        endif;
+        /**
+         * EMO Admin
+        **/
+        if( decode($_SESSION['groupuserid']) == 4 ): ?>
                 
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo EMO_HOME; ?>">
@@ -156,14 +248,17 @@
                     </div>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link " href="<?php echo URL_BASEADMIN.EMO_SETTINGS_EDIT; ?>">
+                    <a class="nav-link " href="<?php echo URL_BASEADMIN.EMO_SETTINGS_EDIT.'?true&id=1&page=1'; ?>">
                         <span class="ks-icon la la-cog"></span>
                         <span>Settings</span>
                     </a>                    
                 </li>
                 
-        <?php        
+        <?php
             endif;
+            /**
+            * Country Manager
+            **/
             if( decode($_SESSION['groupuserid']) == 5 ): ?>
                 
                 <li class="nav-item">
