@@ -36,23 +36,23 @@
                     <td>POST</td>
                     <td><?php echo URL_BASE;?>json/user.php?action=changePassword&user_id=user_id&device_id=device_id & current_password=current_password &new_password=new_password</td>
                 </tr>
-                
-
-                <tr>
-                    <td>Change Profile Picture</td>
-                    <td>POST</td>
-                    <td><?php echo URL_BASE;?>json/user.php?action=uploadUpdateImage&user_id=user_id&device_id=device_id&image=image['file']("jpeg","jpg","gif","png")</td>
-                </tr>
                 <tr>
                     <td>Forgot Password</td>
                     <td>POST</td>
                     <td><?php echo URL_BASE;?>json/user.php?action=forgotPassword&email=email</td>
                 </tr>
                 <tr>
+                    <td>Change Profile Picture</td>
+                    <td>POST</td>
+                    <td><?php echo URL_BASE;?>json/user.php?action=uploadUpdateImage&user_id=user_id&device_id=device_id&image=image['file']("jpeg","jpg","gif","png")</td>
+                </tr>
+                <tr>
                     <td>Edit Inspector Profile</td>
                     <td>POST</td>
                     <td><?php echo URL_BASE;?>json/user.php?action=editInspectorProfile &user_id=user_id &device_id=device_id &first_name=first_name &last_name=last_name &phone=phone &location=location &email=email &user_name=user_name</td>
                 </tr>
+                
+                <?php /* ?>
                 
                 <tr>
                     <td>Get Container Sizes</td>
@@ -72,6 +72,7 @@
                     <td><?php echo URL_BASE;?>json/container.php?action=addContainerStepTwo&user_id=user_id&device_id=device_id&container_id=container_id&image_stock_pile=image_stock_pile&image_empty_container=image_empty_container&image_container_loading=image_container_loading&image_container_seal=image_container_seal&image_documents=image_documents</td>
                 </tr>
                 
+               <?php */ ?>
 
                 <tr>
                     <td colspan="3"><b>You have to used the specific method described.</b></td>
