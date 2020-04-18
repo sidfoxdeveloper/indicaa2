@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 16, 2020 at 06:30 PM
+-- Generation Time: Apr 18, 2020 at 05:05 PM
 -- Server version: 5.5.53-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.20
 
@@ -712,20 +712,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='users' AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='users' AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `users_groups_id`, `country_id`, `company_id`, `yard_id`, `user_name`, `first_name`, `last_name`, `email`, `password`, `phone`, `location`, `image`, `status`, `app_access_days`, `rootwaystrash`, `rootwaysstatus`, `token`, `lastlogin`, `created_at`, `modified_at`) VALUES
-(1, 1, 1, 3, 1, 'superadmin', 'Indicaa Group', 'Admin', 'superadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', 'Sydney, Australia', '', 'permanent', 0, 0, 0, '', '2020-04-16 18:11:30', '2020-03-18 00:00:00', '2020-04-16 12:41:30'),
+(1, 1, 1, 3, 1, 'superadmin', 'Indicaa Group', 'Admin', 'superadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', 'Sydney, Australia', '', 'permanent', 0, 0, 0, '', '2020-04-18 14:41:31', '2020-03-18 00:00:00', '2020-04-18 09:11:31'),
 (2, 2, 1, 3, 1, 'manager', 'Indicaa Group ', 'Manager', 'mamager@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-16 11:22:24', '2020-03-18 00:00:00', '2020-04-16 05:52:24'),
 (3, 3, 1, 3, 1, 'countryadmin', 'Indicaa Group ', 'Country Admin', 'countryadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-16 10:36:32', '2020-03-18 00:00:00', '2020-04-16 05:06:32'),
 (4, 4, 1, 3, 1, 'emoadmin', 'Indicaa Group ', 'EMO Admin', 'emoadmin@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-16 17:19:04', '2020-03-18 00:00:00', '2020-04-16 11:49:04'),
 (5, 5, 1, 3, 1, 'countrymanager', 'Indicaa Group ', 'Country Manager', 'countrymanager@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', '', '', 'permanent', 0, 0, 0, '', '2020-04-16 13:02:21', '2020-03-18 00:00:00', '2020-04-16 07:32:21'),
 (6, 6, 1, 3, 1, 'inspector', 'Indicaa Group ', 'Inspector', 'inspector@gmail.com', '=UlVKdFVYZ1cidkSyRVbwZVZHhDeUZlUTJmRSFVVsRmTZdlUHZVb0gnVGFUP', '1234567890', 'Sydney, Australia', 'test.jpg', 'permanent', 0, 0, 0, '07ad28d62d80d8ac8bd65814a3fcb17a', '2020-03-21 06:23:42', '2020-03-18 00:00:00', '2020-03-25 06:58:42'),
-(8, 6, 1, 3, 1, 'test', 'nisha', 'Testing', 'test@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', 'tst loc', '', 'limit_of_days', 600, 0, 0, 'dfbbd97a8036ea9a7e96d03b0f8d785b', '0000-00-00 00:00:00', '2020-03-20 08:15:02', '2020-04-10 06:17:09');
+(8, 6, 1, 3, 1, 'test', 'nisha', 'Testing', 'test@gmail.com', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP', '1234567890', 'tst loc', '', 'limit_of_days', 600, 0, 0, 'dfbbd97a8036ea9a7e96d03b0f8d785b', '0000-00-00 00:00:00', '2020-03-20 08:15:02', '2020-04-10 06:17:09'),
+(9, 6, 0, 0, 0, 'tltransport', 'Transport', 'test', 'tltransport888@gmail.com', 'QVlRHZlbnBjUxoVMV1WMSFGSShFVY9WMhFjWyFmRkV1YuJ0RaZEcLJ1RG9mWHh3UkBjWxdVVodUZtVUP', 'vinevaravine2006', '', '', 'permanent', 0, 0, 0, '', '0000-00-00 00:00:00', '2020-04-18 10:41:44', '2020-04-18 05:11:44');
 
 -- --------------------------------------------------------
 
@@ -773,8 +774,10 @@ CREATE TABLE IF NOT EXISTS `users_logins` (
 
 INSERT INTO `users_logins` (`tempid`, `rootwaysusername`, `rootwayssessionid`, `groupuserid`, `actiontime`) VALUES
 ('==QVWp0VUhlVTJFbahkTWZlWjtmS2olRWdlYGZFUNRlQX5kVWZkVsx2Qi1mUvRmRk5UTFZ1VWtWODZFbwZ0UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '=AFVxI0VrZFMWJjVZF2R4dVZsx2cUV1Y1YVMSZ1YGZlWVxmSzZFbsNnUsRGVU1GeXVGSOhVVB1TP', '==QVWp0VUhFcSJFbaRkTWZVYjxmWVRFbOdlYGZFUNRlQX5kVWZkVsx2Qi1mUvRmRk5UTFZ1VWtWODZFbwZ0UsZ1TWd1Z4dFVOdkUrFDNWZlUWdVRKVnVB1TP', '', '2020-03-18 13:46:16'),
+('==QVWp0VUhlVTJFbaR1YGRWYjxmWxRFba9mUt5EUWpmST5kVWdkVuBnQi1mUUZFbW5UTFZ1VWtWODZFbwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUZlTTJFbaRlTXR3VS1Ge2QlVw9kUH5EUWpmST5kVWdkVuBnQi1mUUZFbW5UTFZ1VWtWODZFbwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-18 15:07:27'),
+('==QVWp0VUZlTTJ2RGR1VthnVSxmW2QlVkFmYGZFUWxGZp5kVWdkVsZ1ShJjUUZFbW9UTFZ1VWtWODZFbwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUZlTT1UVxI3VthnVStmSVRlVaFmYGZFUWxGZp5kVWdkVsZ1ShJjUUZFbW9UTFZ1VWtWODZFbwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-18 15:07:27'),
 ('==QVWp0VUVlTTJFbah1YHFzVStmSFplVkFmYGZFUWpmSX5UVWlkVsx2UidlUzRmRk5UTFVFeW5WT1YlVwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '=AlVGhUVup0cNFjWadlaG5kVwAXcV5WW4JlVaxkUsRmVWtmSZZVMnhnVwUTSTpmSXNleshlVGR2USJjSzdVb4RVTXh3cZVlWXZlRSpHZGRWU', '==QVWp0VUZlTTJ2RKJ3YHRnVS1GexRFboFmYGZFUWpmSX5UVWlkVsx2UidlUzRmRk5UTFVFeW5WT1YlVwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaVXTWJVU', '2020-04-16 13:24:52'),
-('==QVWp0VUVlTTJ2RWR0YGpVYjxmWFRFbWdlYGZFUWxGZp5kVWdkVsx2bidlUUZFbWBVTFVFeW5WT1YlVwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUZlTTJ2RWR1YHhnVStmWVRFbadlYGZFUWxGZp5kVWdkVsx2bidlUUZFbWBVTFVFeW5WT1YlVwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-16 18:29:22'),
+('==QVWp0VUVlTTJ2RWR0YGpVYjxmWFRFbWdlYGZFUWxGZp5kVWdkVsx2bidlUUZFbWBVTFVFeW5WT1YlVwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUUFjQWZlVHZ1VWFWTUpUalVkVzRVV0tmYsZleVxGZoFGWSRXVzw2cidkSDF2R1YVZFVkeZxmU0IlMG9WVsRmTX5mQZZleNhnVGFUP', '==QVWp0VUZlTTJ2RWR1YHhnVStmWVRFbadlYGZFUWxGZp5kVWdkVsx2bidlUUZFbWBVTFVFeW5WT1YlVwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJFbaNVTWJVU', '2020-04-18 15:07:27'),
 ('==QVWp0VUVlTTJ2RWR0YHFzVStmSFRlVkdlYGZVUV1WMO5kVWdkVuBnbidlUzRmRk9UTFVFeW5WT1YlVwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', 'QZlRIVlbKNXTxolWXpmROZFMwFXVulFeSZlWMJFbkZlVWB3RWFDcvJmRWV1VsplTjBDcVZlRkNlVxsWP', '==QVWp0VUVlTTJ2RGBlTXFzVStmSVplVWdlYGZVUV1WMO5kVWdkVuBnbidlUzRmRk9UTFVFeW5WT1YlVwZ0UrZ1UWRVV5dFVOdkUrFDNWZlUWdVRKVnVB1TP', '==AUVZ0RW5GaKJlVaVXTWJVU', '2020-04-16 17:19:08');
 
 -- --------------------------------------------------------
@@ -1014,7 +1017,9 @@ INSERT INTO `users_login_histories` (`users_id`, `ondatetime`, `ip`, `browser`, 
 (5, '2020-04-16 13:02:21', '::1', 'Google Chrome', 1),
 (1, '2020-04-16 17:00:16', '127.0.0.1', 'Mozilla Firefox', 1),
 (4, '2020-04-16 17:19:04', '127.0.0.1', 'Mozilla Firefox', 1),
-(1, '2020-04-16 18:11:30', '127.0.0.1', 'Mozilla Firefox', 1);
+(1, '2020-04-16 18:11:30', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-18 10:39:13', '127.0.0.1', 'Mozilla Firefox', 1),
+(1, '2020-04-18 14:41:31', '::1', 'Google Chrome', 1);
 
 -- --------------------------------------------------------
 
