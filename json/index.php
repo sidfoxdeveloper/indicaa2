@@ -3,7 +3,7 @@
         <title>API FOR INSPECTORS mobile application</title>
     </head>
     <body>
-        <h1>Cool</h1>
+        <h1>Cool123</h1>
         <?php include('../includes/script_top.php'); ?>
         <center>
             <h3>API FOR INSPECTORS mobile application</h3>
