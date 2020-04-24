@@ -27,7 +27,7 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
         $shipping_agent_id = $data['shipping_agent_id'];
         $tare_weight = $data['tare_weight'];
         $gross_weight = $data['gross_weight'];
-        $net_weight = $data['net_weight'];
+        //$net_weight = $data['net_weight'];
         $net_weight_supplier = $data['net_weight_supplier'];
         $net_weight_yard = $data['net_weight_yard'];
         $pay_load = $data['pay_load'];
@@ -86,7 +86,7 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
         $shipping_agent_id = $_POST['shipping_agent_id'];
         $tare_weight = $_POST['tare_weight'];
         $gross_weight = $_POST['gross_weight'];
-        $net_weight = $_POST['net_weight'];
+        //$net_weight = $_POST['net_weight'];
         $net_weight_supplier = $_POST['net_weight_supplier'];
         $net_weight_yard = $_POST['net_weight_yard'];
         $pay_load = $_POST['pay_load'];
@@ -363,7 +363,7 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                                 </div>
                                                         
                                                                 <div class="form-group row">
-                                                                    <label for="tare_weight" class="col-sm-3 form-control-label">Tare Weight:</label>
+                                                                    <label for="tare_weight" class="col-sm-3 form-control-label">Tare Weight (MT):</label>
                                                                     <div class="col-sm-4">
                                                                         <div class="form-control dark" >
                                                                             <?php echo $tare_weight;?>                                                                            
@@ -373,21 +373,9 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                                         <input type="text" name="tare_weight" id="tare_weight" class="form-control" > 
                                                                     </div>   
                                                                 </div>
-                                                        
+                                                                                                                
                                                                 <div class="form-group row">
-                                                                    <label for="net_weight" class="col-sm-3 form-control-label">Net Weight</label>
-                                                                    <div class="col-sm-4">
-                                                                        <div class="form-control dark" >
-                                                                            <?php echo $net_weight;?>                                                                            
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-sm-4">
-                                                                        <input type="text" name="net_weight" id="net_weight" class="form-control" >
-                                                                    </div>   
-                                                                </div>
-                                                        
-                                                                <div class="form-group row">
-                                                                    <label for="net_weight_supplier" class="col-sm-3 form-control-label">Net Weight Supplier</label>
+                                                                    <label for="net_weight_supplier" class="col-sm-3 form-control-label">Net Weight(MT) - Supplier:</label>
                                                                     <div class="col-sm-4">
                                                                         <div class="form-control dark" >
                                                                             <?php echo $net_weight_supplier;?>                                                                            
@@ -399,7 +387,19 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                                 </div>
                                                         
                                                                 <div class="form-group row">
-                                                                    <label for="pay_load" class="col-sm-3 form-control-label">Pay Load</label>
+                                                                    <label for="net_weight_yard" class="col-sm-3 form-control-label">Net Weight (MT) - Yard: </label>
+                                                                    <div class="col-sm-4">
+                                                                        <div class="form-control dark" >
+                                                                            <?php echo $net_weight_yard;?>                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <input type="text" name="net_weight_yard" id="net_weight_yard" class="form-control" >
+                                                                    </div>   
+                                                                </div>
+                                                        
+                                                                <div class="form-group row">
+                                                                    <label for="pay_load" class="col-sm-3 form-control-label">Pay Load (MT):</label>
                                                                     <div class="col-sm-4">
                                                                         <div class="form-control dark" >
                                                                             <?php echo $pay_load;?>                                                                            
@@ -1572,8 +1572,8 @@ if (isset($_POST['addnew'])) {
         if( !isEmpty($_POST['tare_weight']) ):
                 $arr['tare_weight'] = $_POST['tare_weight'];
         endif;
-        if( !isEmpty($_POST['net_weight']) ):
-                $arr['net_weight'] = $_POST['net_weight'];
+        if( !isEmpty($_POST['net_weight_yard']) ):
+                $arr['net_weight_yard'] = $_POST['net_weight_yard'];
         endif;
         if( !isEmpty($_POST['net_weight_supplier']) ):
                 $arr['net_weight_supplier'] = $_POST['net_weight_supplier'];
@@ -1604,8 +1604,9 @@ if (isset($_POST['addnew'])) {
                 $arr['seal_number_id'] = $sn;
         endif;
         if( !isEmpty($_POST['exchange_rate']) ):
-                $temp = implode(',', $_POST['exchange_rate']);
-                $arr['exchange_rate'] = $temp;
+                //$temp = implode(',', $_POST['exchange_rate']);
+                //$arr['exchange_rate'] = $temp;
+                $arr['exchange_rate'] = $_POST['exchange_rate'];
         endif;
         if( !isEmpty($_POST['branch_code_id']) ):
                 $arr['branch_code_id'] = $_POST['branch_code_id'];

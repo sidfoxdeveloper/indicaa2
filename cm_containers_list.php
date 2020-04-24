@@ -5,7 +5,7 @@ if ($permission['view']) {
    
     $pagename = "Containers";
     $listpagename = CM_CONTAINERS_LIST;
-    $editpagename = CM_CONTAINER_EDIT;
+    $editpagename = CM_CONTAINER_ONE_EDIT;
     $viewpagename = CM_CONTAINER_VIEW;
     $table = TB_CONTAINERS;
     
@@ -159,7 +159,10 @@ if ($permission['view']) {
                                                         <tbody>
                                                             <tr>
                                                                 <th width="1">#</th>
+                                                                <th>Date</th>
                                                                 <th>Container No.</th>
+                                                                <th>Supplier</th>
+                                                                <th>Yard</th>
                                                                 <th>Inspector</th>
                                                                 <th>Status</th>
                                                                 <th width="5%">Action</th>
@@ -171,7 +174,20 @@ if ($permission['view']) {
                                                                     ?>
                                                                     <tr>
                                                                         <td><?php echo $i + 1; ?></td>
+                                                                        <td><?php echo date( 'd/m/Y', strtotime($row['created_at']) );?></td>
                                                                         <td><?php echo $row['container_number']; ?></td>
+                                                                        <td>
+                                                                            <?php
+                                                                            $srow = fetchqry('*', TB_SUPPLIER, array('id='=>$row['supplier_id']) );
+                                                                            echo $srow['name'];
+                                                                            ?>
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php
+                                                                            $yrow = fetchqry('*', TB_YARDS, array('id='=>$row['yard_id']) );
+                                                                            echo $yrow['name'];
+                                                                            ?>
+                                                                        </td>
                                                                         <td>
                                                                             <?php
                                                                                 $ins = fetchqry( '*', TB_USERS, array('id='=>$row['user_id']) );
@@ -182,13 +198,13 @@ if ($permission['view']) {
                                                                             <?php
                                                                                 $status = $row['status'];
                                                                                 if($status == 'draft'):
-                                                                                    echo '<button class="btn btn-default btn-lg col-sm-6" >Draft</button';
+                                                                                    echo '<button class="btn btn-default btn-sm col-sm-12" >Draft</button';
                                                                                 elseif($status == 'pending_upload'):    
-                                                                                    echo '<button class="btn btn-primary btn-lg col-sm-6" >Pending Upload</button>';
+                                                                                    echo '<button class="btn btn-primary btn-sm col-sm-12" >Pending Upload</button>';
                                                                                 elseif($status == 'not_verified_by_country_manager'):    
-                                                                                    echo '<button class="btn btn-danger btn-lg col-sm-6" >Not verified</button>';
+                                                                                    echo '<button class="btn btn-danger btn-sm col-sm-12" >Not verified</button>';
                                                                                 elseif($status == 'verified_by_country_manager'):        
-                                                                                    echo '<button class="btn btn-success btn-lg col-sm-6" >Verified</button>';
+                                                                                    echo '<button class="btn btn-success btn-sm col-sm-12" >Verified</button>';
                                                                                 endif;
                                                                             ?>
                                                                         </td>

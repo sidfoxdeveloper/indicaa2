@@ -60,21 +60,21 @@ if ($permission['view']) {
                                                             <div class="box-div">
                                                                 <h4>Containers Not Verified</h4>
                                                                 <p style="padding-bottom:35px;"><strong class="btn btn-primary btn-sm"><?php echo $containerNotVerified; ?></strong></p>
-                                                                <a href="<?php echo URL_BASEADMIN.CM_CONTAINERS;?>">Containers</a>
+                                                                <a href="<?php echo URL_BASEADMIN.CM_CONTAINERS_LIST;?>">Containers</a>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4 col-xs-12">                                                            
                                                             <div class="box-div">
                                                                 <h4>Containers Verified</h4>
                                                                 <p style="padding-bottom:35px;"><strong class="btn btn-primary btn-sm"><?php echo $containersVerified; ?></strong></p>
-                                                                <a href="<?php echo URL_BASEADMIN.CM_CONTAINERS;?>">Containers</a>
+                                                                <a href="<?php echo URL_BASEADMIN.CM_CONTAINERS_LIST;?>">Containers</a>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4 col-xs-12">                          
                                                             <div class="box-div">
                                                                 <h4>Total Containers</h4>
                                                                 <p style="padding-bottom:35px;"><strong class="btn btn-primary btn-sm"><?php echo $totalContainers; ?></strong></p>
-                                                                <a href="<?php echo URL_BASEADMIN.CM_CONTAINERS;?>">Containers</a>
+                                                                <a href="<?php echo URL_BASEADMIN.CM_CONTAINERS_LIST;?>">Containers</a>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -217,6 +217,26 @@
                         <span>Containers</span>
                     </a>                    
                 </li>
+                <li class="nav-item dropdown <?php if( $CP == EMO_COST_LIST || $CP == EMO_COST_EDIT ){ echo 'open'; } ?>">
+                    <a class="nav-link dropdown-toggle" href="#">
+                        <span class="ks-icon la la-ship"></span>
+                        <span>Cost</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.EMO_COST_LIST;?>">Costs</a>
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.EMO_COST_EDIT;?>">Add Cost</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown <?php if( $CP == EMO_PORT_LIST || $CP == EMO_PORT_EDIT ){ echo 'open'; } ?>">
+                    <a class="nav-link dropdown-toggle" href="#">
+                        <span class="ks-icon la la-ship"></span>
+                        <span>Port</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.EMO_PORT_LIST;?>">Costs</a>
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.EMO_PORT_EDIT;?>">Add Cost</a>
+                    </div>
+                </li>
                 <li class="nav-item dropdown <?php if( $CP == EMO_EMPTY_DEPOT_LIST || $CP == EMO_EMPTY_DEPOT_EDIT ){ echo 'open'; } ?>">
                     <a class="nav-link dropdown-toggle" href="#">
                         <span class="ks-icon la la-ship"></span>
@@ -246,9 +266,19 @@
                         <a class="dropdown-item" href="<?php echo URL_BASEADMIN.EMO_SHIPPING_AGENT_LIST;?>">Agents</a>
                         <a class="dropdown-item" href="<?php echo URL_BASEADMIN.EMO_SHIPPING_AGENT_EDIT;?>">Add Agent</a>
                     </div>
+                </li>                
+                <li class="nav-item dropdown <?php if( $CP == EMO_LR_REPORT || $CP == EMO_LCR_REPORT ){ echo 'open'; } ?>">
+                    <a class="nav-link dropdown-toggle" href="#">
+                        <span class="ks-icon la la-pagelines"></span>
+                        <span>Reports</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.EMO_LR_REPORT;?>">LR Report</a>
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.EMO_LCR_REPORT;?>">LCR Report</a>
+                    </div>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link " href="<?php echo URL_BASEADMIN.EMO_SETTINGS_EDIT.'?true&id=1&page=1'; ?>">
+                    <a class="nav-link " href="<?php echo URL_BASEADMIN.EMO_SETTINGS_EDIT.'?true&id='.$user['id'].'&page=1'; ?>">
                         <span class="ks-icon la la-cog"></span>
                         <span>Settings</span>
                     </a>                    
@@ -272,6 +302,16 @@
                         <span class="ks-icon la la-ship"></span>
                         <span>Containers</span>
                     </a>                    
+                </li>
+                <li class="nav-item dropdown <?php if( $CP == CM_LR_REPORT || $CP == CM_LCR_REPORT ){ echo 'open'; } ?>">
+                    <a class="nav-link dropdown-toggle" href="#">
+                        <span class="ks-icon la la-pagelines"></span>
+                        <span>Reports</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.CM_LR_REPORT;?>">LR Report</a>
+                        <a class="dropdown-item" href="<?php echo URL_BASEADMIN.CM_LCR_REPORT;?>">LCR Report</a>
+                    </div>
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link " href="<?php echo URL_BASEADMIN.CM_SETTINGS_EDIT; ?>">

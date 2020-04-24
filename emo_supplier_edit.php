@@ -15,10 +15,12 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
         $pagetype = "Edit";
         $data = fetchqry("*", $table, array("id=" => $_REQUEST['id']));
         $name = $data['name'];
+        $status = $data['status'];
         $created_at = date( 'd F, Y', strtotime($data['created_at']) );        
         
     } else {            
         $name = $_REQUEST['name'];
+        $status = $_REQUEST['status'];
     }
     if (strpos($_SERVER['REQUEST_URI'], "?true") != 0) {
         
@@ -86,7 +88,20 @@ if (($permission['add'] && !$_REQUEST['id']) || ($permission['edit'] && $_REQUES
                                                                     </div>
                                                                 </div>
                                                             </div>
-
+                                                            
+                                                            <div class="form-group row">
+                                                                <label for="status" class="col-sm-2 form-control-label">Status</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">                         
+                                                                        <select name="status" id="status" class="form-control">
+                                                                            <option>Select Status</option>
+                                                                            <option <?php if($status == 'verified'){ echo 'selected'; } ?> value="verified">Verified</option>
+                                                                            <option <?php if($status == 'unverified'){ echo 'selected'; } ?> value="unverified">Unverified</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
                                                             <div class="form-group row">
                                                                 <label for="name" class="col-sm-2 form-control-label">Supplier Name</label>
                                                                 <div class="col-sm-10">
@@ -148,12 +163,12 @@ if (isset($_POST['addnew'])) {
     
      if ($_REQUEST['id']) {
          
-        $arr = array( "name"=>$_POST['name'], "country_id"=>$_POST['country_id'] );            
+        $arr = array( "name"=>$_POST['name'], "country_id"=>$_POST['country_id'], "status"=>$_POST['status'] );            
         $update = updateqry( $arr, array("id=" => $_REQUEST['id']), $table );        
         
     } else {
         
-        $arr = array( "country_id"=>$_POST['country_id'], "name"=>$_POST['name'], "created_at"=>date('Y-m-d h:i:s') );  
+        $arr = array( "country_id"=>$_POST['country_id'], "name"=>$_POST['name'], "status"=>$_POST['status'], "created_at"=>date('Y-m-d h:i:s') );  
         $insert = insertqry($arr, $table);
         $insertedid = getfieldmaxvalue('id', $table); 
         

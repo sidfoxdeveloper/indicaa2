@@ -4,8 +4,8 @@ include('includes/script_top.php');
 if ($permission['view']) {
    
     $pagename = "Containers";
-    $listpagename = EMO_CONTAINER_LIST;
-    $editpagename = EMO_CONTAINER_EDIT;
+    $listpagename = EMO_CONTAINERS_LIST;
+    $editpagename = EMO_CONTAINER_ONE_EDIT;
     $viewpagename = EMO_CONTAINER_VIEW;
     $table = TB_CONTAINERS;
     
@@ -160,7 +160,10 @@ if ($permission['view']) {
                                                         <tbody>
                                                             <tr>
                                                                 <th width="1">#</th>
+                                                                <th>Date</th>
                                                                 <th>Container No.</th>
+                                                                <th>Supplier</th>
+                                                                <th>Yard</th>
                                                                 <th>Inspector</th>
                                                                 <th>Status</th>
                                                                 <th width="5%">Action</th>
@@ -173,6 +176,18 @@ if ($permission['view']) {
                                                                     <tr>
                                                                         <td><?php echo $i + 1; ?></td>
                                                                         <td><?php echo $row['container_number']; ?></td>
+                                                                        <td>
+                                                                            <?php
+                                                                            $srow = fetchqry('*', TB_SUPPLIER, array('id='=>$row['supplier_id']) );
+                                                                            echo $srow['name'];
+                                                                            ?>
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php
+                                                                            $yrow = fetchqry('*', TB_YARDS, array('id='=>$row['yard_id']) );
+                                                                            echo $yrow['name'];
+                                                                            ?>
+                                                                        </td>
                                                                         <td>
                                                                             <?php
                                                                                 $ins = fetchqry( '*', TB_USERS, array('id='=>$row['user_id']) );

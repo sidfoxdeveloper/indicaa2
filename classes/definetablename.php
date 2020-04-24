@@ -27,11 +27,37 @@ define('TB_BASE_PORT_USED_FOR_FREIGHT_COSTING', 'base_port_used_for_freight_cost
 define('TB_PORT_OF_LOADING', 'port_of_loading');
 define('TB_STORAGES', 'storages');
 define('TB_TERMINALS', 'terminals');
+define('TB_NOTIFICATIONS', 'notifications');
 
 define('TB_CONTAINER_ARCHIEVE', 'container_archieve');
 define('TB_CURRENCY', 'currency');
+define('TB_COST', 'cost');
+define('TB_PORT', 'port');
 
 define('TB_SETTINGS_CM', 'settings_cm');
 define('TB_SETTINGS_CA', 'settings_ca');
 define('TB_SETTINGS_EMO', 'settings_emo');
 define('TB_SETTINGS_SA', 'settings_sa');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
